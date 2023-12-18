@@ -67,7 +67,8 @@
   .small {
     @apply font-mono text-black text-11 md:text-xs leading-none uppercase;
   }
-  p {
+  p,
+  .text {
     @apply font-sans text-sm leading-[140%] md:text-16;
   }
   .badge {

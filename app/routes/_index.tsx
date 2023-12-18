@@ -21,9 +21,12 @@ import HomepageBanner from '~/components/homepage/HomepageBanner';
 import HomepagePresses from '~/components/homepage/HomepagePresses';
 import HomepageReview from '~/components/homepage/HomepageReview';
 import HomepagePromises from '~/components/homepage/HomepagePromises';
+import HomepageTiktok from '~/components/homepage/HomepageTiktok';
+import joinClub from '~/assets/join.svg';
+import joinClubM from '~/assets/join-m.svg';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'Bedtribe | Home'}];
 };
 
 export async function loader({context}: LoaderFunctionArgs) {
@@ -126,9 +129,25 @@ export default function Homepage() {
           </Await>
         </Suspense>
       )}
+      <div className="pt-8 con">
+        <div className="relative">
+          <img
+            src={joinClub}
+            alt="join vector"
+            className="hidden w-full md:block"
+          />
+          <img
+            src={joinClubM}
+            alt="join vector"
+            className="block w-full md:hidden"
+          />
+        </div>
+      </div>
       {tiktoksPromise && (
         <Suspense>
-          <Await resolve={tiktoksPromise}>{(tiktoks) => <></>}</Await>
+          <Await resolve={tiktoksPromise}>
+            {(tiktoks) => <HomepageTiktok data={tiktoks} />}
+          </Await>
         </Suspense>
       )}
     </>

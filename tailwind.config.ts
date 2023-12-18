@@ -4,6 +4,12 @@ import type {Config} from 'tailwindcss';
 export default {
   content: ['./app/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    backgroundSize: {
+      auto: 'auto',
+      cover: 'cover',
+      contain: 'contain',
+      '50%': '50%',
+    },
     extend: {
       colors: {
         cream: '#F6F5F2',
@@ -12,6 +18,7 @@ export default {
         zap: '#282828',
         dusk: '#888B8E',
         night: '#353535',
+        'product-card': '#F0F0F0',
       },
       fontSize: {
         '11': ['11px', '1.0'],

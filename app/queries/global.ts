@@ -76,6 +76,16 @@ export const FEATURED_PRODUCT_ITEM_FRAGMENT = `#graphql
 export const PRODUCT_CARD_ITEM_FRAGMENT = `#graphql
   fragment ProductCardItem on Product {
     title
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+    }
     featuredImage {
       url
       width

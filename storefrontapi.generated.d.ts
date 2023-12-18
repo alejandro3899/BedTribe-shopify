@@ -74,6 +74,16 @@ export type AboutFeaturedProductQuery = {
     product?: StorefrontAPI.Maybe<{
       reference?: StorefrontAPI.Maybe<
         Pick<StorefrontAPI.Product, 'title'> & {
+          priceRange: {
+            minVariantPrice: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+            maxVariantPrice: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+          };
           featuredImage?: StorefrontAPI.Maybe<
             Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
           >;
@@ -318,6 +328,16 @@ export type FeaturedProductItemFragment = {
   product?: StorefrontAPI.Maybe<{
     reference?: StorefrontAPI.Maybe<
       Pick<StorefrontAPI.Product, 'title'> & {
+        priceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+          maxVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
         featuredImage?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
         >;
@@ -337,6 +357,10 @@ export type FeaturedProductItemFragment = {
 };
 
 export type ProductCardItemFragment = Pick<StorefrontAPI.Product, 'title'> & {
+  priceRange: {
+    minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+    maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  };
   featuredImage?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
   >;
@@ -428,6 +452,16 @@ export type HomepageFeaturedProductQuery = {
     product?: StorefrontAPI.Maybe<{
       reference?: StorefrontAPI.Maybe<
         Pick<StorefrontAPI.Product, 'title'> & {
+          priceRange: {
+            minVariantPrice: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+            maxVariantPrice: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+          };
           featuredImage?: StorefrontAPI.Maybe<
             Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
           >;
@@ -551,6 +585,16 @@ export type HomepageUspItemFragment = {
   product?: StorefrontAPI.Maybe<{
     reference?: StorefrontAPI.Maybe<
       Pick<StorefrontAPI.Product, 'title'> & {
+        priceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+          maxVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
         featuredImage?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
         >;
@@ -594,6 +638,16 @@ export type HomepageUsPsQuery = {
             product?: StorefrontAPI.Maybe<{
               reference?: StorefrontAPI.Maybe<
                 Pick<StorefrontAPI.Product, 'title'> & {
+                  priceRange: {
+                    minVariantPrice: Pick<
+                      StorefrontAPI.MoneyV2,
+                      'amount' | 'currencyCode'
+                    >;
+                    maxVariantPrice: Pick<
+                      StorefrontAPI.MoneyV2,
+                      'amount' | 'currencyCode'
+                    >;
+                  };
                   featuredImage?: StorefrontAPI.Maybe<
                     Pick<
                       StorefrontAPI.Image,
@@ -2345,7 +2399,7 @@ interface GeneratedQueryTypes {
     return: AboutIntroQuery;
     variables: AboutIntroQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment ProductCardItem on Product {\n    title\n    featuredImage {\n      url\n      width\n      height\n      altText\n    }\n    variants(first: 25) {\n      edges {\n        node {\n          title\n          price {\n            amount\n            currencyCode\n          }\n          compareAtPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment FeaturedProductItem on Metaobject {\n    title: field(key: "title") { value }\n    subtitle: field(key: "subtitle") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    } \n    product: field(key: "product") {\n      reference {\n        ... ProductCardItem\n      }\n    }\n  }\n\n  query AboutFeaturedProduct(\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "about-featured-product",\n      type: "homepage_featured_product"\n    }) {\n      ... FeaturedProductItem\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment ProductCardItem on Product {\n    title\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    featuredImage {\n      url\n      width\n      height\n      altText\n    }\n    variants(first: 25) {\n      edges {\n        node {\n          title\n          price {\n            amount\n            currencyCode\n          }\n          compareAtPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment FeaturedProductItem on Metaobject {\n    title: field(key: "title") { value }\n    subtitle: field(key: "subtitle") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    } \n    product: field(key: "product") {\n      reference {\n        ... ProductCardItem\n      }\n    }\n  }\n\n  query AboutFeaturedProduct(\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "about-featured-product",\n      type: "homepage_featured_product"\n    }) {\n      ... FeaturedProductItem\n    }\n  }\n': {
     return: AboutFeaturedProductQuery;
     variables: AboutFeaturedProductQueryVariables;
   };
@@ -2385,7 +2439,7 @@ interface GeneratedQueryTypes {
     return: HomepageIntroQuery;
     variables: HomepageIntroQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment ProductCardItem on Product {\n    title\n    featuredImage {\n      url\n      width\n      height\n      altText\n    }\n    variants(first: 25) {\n      edges {\n        node {\n          title\n          price {\n            amount\n            currencyCode\n          }\n          compareAtPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment FeaturedProductItem on Metaobject {\n    title: field(key: "title") { value }\n    subtitle: field(key: "subtitle") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    } \n    product: field(key: "product") {\n      reference {\n        ... ProductCardItem\n      }\n    }\n  }\n\n  query HomepageFeaturedProduct(\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "homepage-featured-product",\n      type: "homepage_featured_product"\n    }) {\n      ... FeaturedProductItem\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment ProductCardItem on Product {\n    title\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    featuredImage {\n      url\n      width\n      height\n      altText\n    }\n    variants(first: 25) {\n      edges {\n        node {\n          title\n          price {\n            amount\n            currencyCode\n          }\n          compareAtPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n  #graphql\n  fragment FeaturedProductItem on Metaobject {\n    title: field(key: "title") { value }\n    subtitle: field(key: "subtitle") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    } \n    product: field(key: "product") {\n      reference {\n        ... ProductCardItem\n      }\n    }\n  }\n\n  query HomepageFeaturedProduct(\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "homepage-featured-product",\n      type: "homepage_featured_product"\n    }) {\n      ... FeaturedProductItem\n    }\n  }\n': {
     return: HomepageFeaturedProductQuery;
     variables: HomepageFeaturedProductQueryVariables;
   };
@@ -2401,7 +2455,7 @@ interface GeneratedQueryTypes {
     return: HomepagePressesQuery;
     variables: HomepagePressesQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment ProductCardItem on Product {\n    title\n    featuredImage {\n      url\n      width\n      height\n      altText\n    }\n    variants(first: 25) {\n      edges {\n        node {\n          title\n          price {\n            amount\n            currencyCode\n          }\n          compareAtPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n  fragment HomepageUSPItem on Metaobject {\n    tab: field(key: "tab") { value }\n    product: field(key: "product") {\n      reference {\n        ... ProductCardItem\n      }\n    }\n  }\n\n  query HomepageUSPs (\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "sleep-just-the-way-you-like-it",\n      type: "homepage_usp"\n    }) {\n      title: field(key: "title") { value }\n      image: field(key: "image") {\n        reference {\n          ... on MediaImage {\n            image {\n              width\n              height\n              altText\n              url\n            }\n          }\n        }\n      }\n      items: field(key: "items") {\n        references (first: 10) {\n          edges {\n            node {\n              ...HomepageUSPItem\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment ProductCardItem on Product {\n    title\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    featuredImage {\n      url\n      width\n      height\n      altText\n    }\n    variants(first: 25) {\n      edges {\n        node {\n          title\n          price {\n            amount\n            currencyCode\n          }\n          compareAtPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n  fragment HomepageUSPItem on Metaobject {\n    tab: field(key: "tab") { value }\n    product: field(key: "product") {\n      reference {\n        ... ProductCardItem\n      }\n    }\n  }\n\n  query HomepageUSPs (\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "sleep-just-the-way-you-like-it",\n      type: "homepage_usp"\n    }) {\n      title: field(key: "title") { value }\n      image: field(key: "image") {\n        reference {\n          ... on MediaImage {\n            image {\n              width\n              height\n              altText\n              url\n            }\n          }\n        }\n      }\n      items: field(key: "items") {\n        references (first: 10) {\n          edges {\n            node {\n              ...HomepageUSPItem\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: HomepageUSPsQuery;
     variables: HomepageUSPsQueryVariables;
   };
