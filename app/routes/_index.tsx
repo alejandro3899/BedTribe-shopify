@@ -1,4 +1,4 @@
-import {defer, json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {defer, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, type MetaFunction, Await} from '@remix-run/react';
 import {
   HOMEPAGE_BANNER,
@@ -14,20 +14,13 @@ import {
 } from '~/queries/homepage';
 import HomepageHero from '~/components/homepage/HomepageHero';
 import {Suspense} from 'react';
-import {
-  HomepageBannerQuery,
-  HomepageFeaturedProductQuery,
-  HomepageHeroQuery,
-  HomepageIntroQuery,
-  HomepageLogosQuery,
-  HomepagePressesQuery,
-  HomepagePromisesQuery,
-  HomepageReviewQuery,
-  HomepageTiktoksQuery,
-  HomepageUsPsQuery,
-} from 'storefrontapi.generated';
 import HomepageIntro from '~/components/homepage/HomepageIntro';
 import HomepageFeaturedProduct from '~/components/homepage/HomepageFeaturedProduct';
+import HomepageLogos from '~/components/homepage/HomepageLogos';
+import HomepageBanner from '~/components/homepage/HomepageBanner';
+import HomepagePresses from '~/components/homepage/HomepagePresses';
+import HomepageReview from '~/components/homepage/HomepageReview';
+import HomepagePromises from '~/components/homepage/HomepagePromises';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Hydrogen | Home'}];
@@ -80,7 +73,7 @@ export default function Homepage() {
       {introPromise && (
         <Suspense>
           <Await resolve={introPromise}>
-            {(intro) => <HomepageIntro data={intro as HomepageIntroQuery} />}
+            {(intro) => <HomepageIntro data={intro} />}
           </Await>
         </Suspense>
       )}
@@ -88,26 +81,30 @@ export default function Homepage() {
         <Suspense>
           <Await resolve={featuredProductPromise}>
             {(featureProduct) => (
-              <HomepageFeaturedProduct
-                data={featureProduct as HomepageFeaturedProductQuery}
-              />
+              <HomepageFeaturedProduct data={featureProduct} />
             )}
           </Await>
         </Suspense>
       )}
       {logosPromise && (
         <Suspense>
-          <Await resolve={logosPromise}>{(logos) => <></>}</Await>
+          <Await resolve={logosPromise}>
+            {(logos) => <HomepageLogos data={logos} />}
+          </Await>
         </Suspense>
       )}
       {bannerPromise && (
         <Suspense>
-          <Await resolve={bannerPromise}>{(banner) => <></>}</Await>
+          <Await resolve={bannerPromise}>
+            {(banner) => <HomepageBanner data={banner} />}
+          </Await>
         </Suspense>
       )}
       {pressesPromise && (
         <Suspense>
-          <Await resolve={pressesPromise}>{(presses) => <></>}</Await>
+          <Await resolve={pressesPromise}>
+            {(presses) => <HomepagePresses data={presses} />}
+          </Await>
         </Suspense>
       )}
       {uspPromise && (
@@ -117,12 +114,16 @@ export default function Homepage() {
       )}
       {reviewPromise && (
         <Suspense>
-          <Await resolve={reviewPromise}>{(review) => <></>}</Await>
+          <Await resolve={reviewPromise}>
+            {(review) => <HomepageReview data={review} />}
+          </Await>
         </Suspense>
       )}
       {promisesPromise && (
         <Suspense>
-          <Await resolve={promisesPromise}>{(promise) => <></>}</Await>
+          <Await resolve={promisesPromise}>
+            {(promises) => <HomepagePromises data={promises} />}
+          </Await>
         </Suspense>
       )}
       {tiktoksPromise && (

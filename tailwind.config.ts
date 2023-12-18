@@ -1,3 +1,4 @@
+import defaultTheme from 'tailwindcss/defaultTheme';
 import type {Config} from 'tailwindcss';
 
 export default {
@@ -29,6 +30,10 @@ export default {
       },
       spacing: {
         '13': '52px',
+      },
+      fontFamily: {
+        sans: ['Owners', ...defaultTheme.fontFamily.sans],
+        mono: ['PPTelegraf', ...defaultTheme.fontFamily.mono],
       },
     },
   },

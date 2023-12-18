@@ -66,6 +66,7 @@ export const HOMEPAGE_LOGOS = `#graphql
             node {
               ... on MediaImage {
                 image {
+                  id
                   url
                   width
                   height
@@ -123,6 +124,7 @@ export const HOMEPAGE_BANNER = `#graphql
 
 export const HOMEPAGE_PRESSES = `#graphql
   fragment HomepagePressItem on Metaobject {
+    id
     desc: field(key: "description"){ value }
     image: field(key: "image") {
       reference {
@@ -206,7 +208,7 @@ export const HOMEPAGE_USPS = `#graphql
 ` as const;
 
 export const HOMEPAGE_REVIEW = `#graphql
-    query HomepageReview (
+  query HomepageReview (
     $country: CountryCode,
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {

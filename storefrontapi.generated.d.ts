@@ -459,7 +459,10 @@ export type HomepageLogosQuery = {
         edges: Array<{
           node: {
             image?: StorefrontAPI.Maybe<
-              Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
+              Pick<
+                StorefrontAPI.Image,
+                'id' | 'url' | 'width' | 'height' | 'altText'
+              >
             >;
           };
         }>;
@@ -500,7 +503,7 @@ export type HomepageBannerQuery = {
   }>;
 };
 
-export type HomepagePressItemFragment = {
+export type HomepagePressItemFragment = Pick<StorefrontAPI.Metaobject, 'id'> & {
   desc?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
   image?: StorefrontAPI.Maybe<{
     reference?: StorefrontAPI.Maybe<{
@@ -522,7 +525,7 @@ export type HomepagePressesQuery = {
     presses?: StorefrontAPI.Maybe<{
       references?: StorefrontAPI.Maybe<{
         edges: Array<{
-          node: {
+          node: Pick<StorefrontAPI.Metaobject, 'id'> & {
             desc?: StorefrontAPI.Maybe<
               Pick<StorefrontAPI.MetaobjectField, 'value'>
             >;
@@ -2386,7 +2389,7 @@ interface GeneratedQueryTypes {
     return: HomepageFeaturedProductQuery;
     variables: HomepageFeaturedProductQueryVariables;
   };
-  '#graphql\n  query HomepageLogos(\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "homepage-logos",\n      type: "homepage_logos"\n    }) {\n      logos: field(key: "logos") {\n        references(first: 25) {\n          edges {\n            node {\n              ... on MediaImage {\n                image {\n                  url\n                  width\n                  height\n                  altText\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query HomepageLogos(\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "homepage-logos",\n      type: "homepage_logos"\n    }) {\n      logos: field(key: "logos") {\n        references(first: 25) {\n          edges {\n            node {\n              ... on MediaImage {\n                image {\n                  id\n                  url\n                  width\n                  height\n                  altText\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: HomepageLogosQuery;
     variables: HomepageLogosQueryVariables;
   };
@@ -2394,7 +2397,7 @@ interface GeneratedQueryTypes {
     return: HomepageBannerQuery;
     variables: HomepageBannerQueryVariables;
   };
-  '#graphql\n  fragment HomepagePressItem on Metaobject {\n    desc: field(key: "description"){ value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            width\n            height\n            altText\n            url\n          }\n        }\n      }\n    }\n  }\n\n  query HomepagePresses (\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "our-bamboo-sheets",\n      type: "homepage_presses"\n    }) {\n      title: field(key: "title") { value }\n      presses: field(key: "presses") {\n        references(first: 3) {\n          edges {\n            node {\n              ...HomepagePressItem\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  fragment HomepagePressItem on Metaobject {\n    id\n    desc: field(key: "description"){ value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            width\n            height\n            altText\n            url\n          }\n        }\n      }\n    }\n  }\n\n  query HomepagePresses (\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "our-bamboo-sheets",\n      type: "homepage_presses"\n    }) {\n      title: field(key: "title") { value }\n      presses: field(key: "presses") {\n        references(first: 3) {\n          edges {\n            node {\n              ...HomepagePressItem\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: HomepagePressesQuery;
     variables: HomepagePressesQueryVariables;
   };
@@ -2402,7 +2405,7 @@ interface GeneratedQueryTypes {
     return: HomepageUSPsQuery;
     variables: HomepageUSPsQueryVariables;
   };
-  '#graphql\n    query HomepageReview (\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "andy-kong",\n      type: "homepage_review"\n    }) {\n      name: field(key: "name") { value }\n      review: field(key: "review") { value }\n      image: field(key: "image") {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n              width\n              height\n              altText\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query HomepageReview (\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "andy-kong",\n      type: "homepage_review"\n    }) {\n      name: field(key: "name") { value }\n      review: field(key: "review") { value }\n      image: field(key: "image") {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n              width\n              height\n              altText\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: HomepageReviewQuery;
     variables: HomepageReviewQueryVariables;
   };
