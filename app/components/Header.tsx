@@ -1,26 +1,41 @@
 import {Await, NavLink} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import type {HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
+import logo from '~/assets/logo.svg';
+import account from '~/assets/account.svg';
+import cart from '~/assets/cart.svg';
+import search from '~/assets/search.svg';
+import cross from '~/assets/cross.svg';
+import Drawer from './Drawer';
 
-type HeaderProps = Pick<LayoutProps, 'header' | 'cart' | 'isLoggedIn'>;
+type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 
-type Viewport = 'desktop' | 'mobile';
-
-export function Header({header, isLoggedIn, cart}: HeaderProps) {
-  const {shop, menu} = header;
+export function Header({header, cart}: HeaderProps) {
+  const {menu} = header;
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
+    <header className="absolute top-5 left-5 right-5 bg-cream rounded-lg px-3 md:px-5 h-10 md:h-12">
+      <NavLink
+        prefetch="intent"
+        to="/"
+        style={activeLinkStyle}
+        end
+        className="center"
+      >
+        <img
+          src={logo}
+          alt="site logo"
+          className="w-[90px] md:w-[100px] lg:w-[120px]"
+        />
       </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+      <div className="flex justify-between items-center h-full">
+        <HeaderMenu
+          menu={menu}
+          primaryDomainUrl={header.shop.primaryDomain.url}
+        />
+        <HeaderCtas cart={cart} />
+      </div>
     </header>
   );
 }
@@ -28,93 +43,134 @@ export function Header({header, isLoggedIn, cart}: HeaderProps) {
 export function HeaderMenu({
   menu,
   primaryDomainUrl,
-  viewport,
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
-  viewport: Viewport;
 }) {
   const {publicStoreDomain} = useRootLoaderData();
-  const className = `header-menu-${viewport}`;
-
-  function closeAside(event: React.MouseEvent<HTMLAnchorElement>) {
-    if (viewport === 'mobile') {
-      event.preventDefault();
-      window.location.href = event.currentTarget.href;
-    }
-  }
 
   return (
-    <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={closeAside}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
-      )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
+    <>
+      <nav className="space-x-5 hidden md:flex">
+        {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+          if (!item.url) return null;
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={closeAside}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
-    </nav>
+          // if the url is internal, we strip the domain
+          const url =
+            item.url.includes('myshopify.com') ||
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
+              ? new URL(item.url).pathname
+              : item.url;
+          return (
+            <NavLink
+              className="header-menu-item"
+              end
+              key={item.id}
+              prefetch="intent"
+              style={activeLinkStyle}
+              to={url}
+            >
+              {item.title}
+            </NavLink>
+          );
+        })}
+      </nav>
+      <HeaderMenuMobileToggle menu={menu} primaryDomainUrl={primaryDomainUrl} />
+    </>
   );
 }
 
-function HeaderCtas({
-  isLoggedIn,
-  cart,
-}: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        {isLoggedIn ? 'Account' : 'Sign in'}
-      </NavLink>
+    <nav
+      className="flex space-x-1 [&>*]:flex [&>*]:justify-center [&>*]:items-center"
+      role="navigation"
+    >
       <SearchToggle />
+      <NavLink prefetch="intent" to="/account">
+        <img src={account} alt="header account" />
+      </NavLink>
       <CartToggle cart={cart} />
     </nav>
   );
 }
 
-function HeaderMenuMobileToggle() {
+function HeaderMenuMobileToggle({
+  primaryDomainUrl,
+  menu,
+}: {
+  menu: HeaderProps['header']['menu'];
+  primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
+}) {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const {publicStoreDomain} = useRootLoaderData();
+
   return (
-    <a className="header-menu-mobile-toggle" href="#mobile-menu-aside">
-      <h3>☰</h3>
-    </a>
+    <>
+      <span
+        className="header-menu-item md:hidden"
+        onClick={() => setIsOpen(true)}
+      >
+        Menu
+      </span>
+      <Drawer
+        enterFrom="LEFT"
+        closeDrawer={() => setIsOpen(false)}
+        isOpen={isOpen}
+      >
+        <div className="p-5 relative">
+          <button
+            className="absolute top-5 right-5"
+            onClick={() => setIsOpen(false)}
+          >
+            <img src={cross} alt="cross icon" />
+          </button>
+          <div className="flex flex-col space-y-5 mt-6">
+            {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+              if (!item.url) return null;
+              // if the url is internal, we strip the domain
+              const url =
+                item.url.includes('myshopify.com') ||
+                item.url.includes(publicStoreDomain) ||
+                item.url.includes(primaryDomainUrl)
+                  ? new URL(item.url).pathname
+                  : item.url;
+
+              return (
+                <NavLink
+                  className="header-menu-item"
+                  end
+                  key={item.id}
+                  prefetch="intent"
+                  style={activeLinkStyle}
+                  to={url}
+                >
+                  {item.title}
+                </NavLink>
+              );
+            })}
+          </div>
+        </div>
+      </Drawer>
+    </>
   );
 }
 
 function SearchToggle() {
-  return <a href="#search-aside">Search</a>;
+  return (
+    <a href="#search-aside">
+      <img src={search} alt="header search" />
+    </a>
+  );
 }
 
 function CartBadge({count}: {count: number}) {
-  return <a href="#cart-aside">Cart {count}</a>;
+  return (
+    <a href="#cart-aside">
+      <img src={cart} alt="header cart" />
+    </a>
+  );
 }
 
 function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {

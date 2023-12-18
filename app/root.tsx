@@ -20,6 +20,7 @@ import {
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
 import tailwindCSS from './tailwind.css';
+import swiperCSS from 'swiper/css';
 import {Layout} from '~/components/Layout';
 
 /**
@@ -46,6 +47,7 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 export function links() {
   return [
     {rel: 'stylesheet', href: tailwindCSS},
+    {rel: 'stylesheet', href: swiperCSS},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -89,7 +91,7 @@ export async function loader({context}: LoaderFunctionArgs) {
   const headerPromise = storefront.query(HEADER_QUERY, {
     cache: storefront.CacheLong(),
     variables: {
-      headerMenuHandle: 'main-menu', // Adjust to your header menu handle
+      headerMenuHandle: 'hydrogen-header', // Adjust to your header menu handle
     },
   });
 
@@ -98,7 +100,6 @@ export async function loader({context}: LoaderFunctionArgs) {
       cart: cartPromise,
       footer: footerPromise,
       header: await headerPromise,
-      isLoggedIn,
       publicStoreDomain,
     },
     {headers},

@@ -72,53 +72,52 @@ export default function Login() {
   const error = data?.error || null;
 
   return (
-    <div className="login">
-      <h1>Sign in.</h1>
-      <Form method="POST">
-        <fieldset>
-          <label htmlFor="email">Email address</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="Email address"
-            aria-label="Email address"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
-          />
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            placeholder="Password"
-            aria-label="Password"
-            minLength={8}
-            required
-          />
-        </fieldset>
-        {error ? (
-          <p>
-            <mark>
-              <small>{error}</small>
-            </mark>
+    <div className="con h-screen relative">
+      <div className="center w-full max-w-[450px] bg-cream px-7 py-10 rounded-lg account">
+        <h6 className="text-center">Log in</h6>
+        <Form method="POST">
+          <fieldset>
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="Enter email address here"
+              aria-label="Email address"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
+            />
+            <label htmlFor="password">Enter Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Enter password"
+              aria-label="Password"
+              minLength={8}
+              required
+            />
+          </fieldset>
+          {error && (
+            <p className="mt-3">
+              <mark>
+                <small>{error}</small>
+              </mark>
+            </p>
+          )}
+          <button type="submit">Sign in</button>
+        </Form>
+        <div className="[&_a]:underline underline-offset-2 mt-3">
+          <p className="text-center small">
+            New customer? <Link to="/account/register">Register</Link>
           </p>
-        ) : (
-          <br />
-        )}
-        <button type="submit">Sign in</button>
-      </Form>
-      <br />
-      <div>
-        <p>
-          <Link to="/account/recover">Forgot password →</Link>
-        </p>
-        <p>
-          <Link to="/account/register">Register →</Link>
-        </p>
+          <p className="text-center small">
+            <Link to="/account/recover">Forgot password?</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

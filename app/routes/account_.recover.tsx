@@ -51,30 +51,29 @@ export default function Recover() {
   const action = useActionData<ActionResponse>();
 
   return (
-    <div className="account-recover">
-      <div>
+    <div className="con h-screen relative">
+      <div className="center w-full max-w-[450px] bg-cream px-7 py-10 rounded-lg account">
         {action?.resetRequested ? (
           <>
-            <h1>Request Sent.</h1>
-            <p>
+            <h6 className="text-center">Request Sent.</h6>
+            <p className="mt-2 text-night opacity-30 text-center">
               If that email address is in our system, you will receive an email
               with instructions about how to reset your password in a few
               minutes.
             </p>
-            <br />
-            <Link to="/account/login">Return to Login</Link>
+            <div className="flex justify-center small [&_a]:underline underline-offset-2">
+              <Link to="/account/login">Return to Login</Link>
+            </div>
           </>
         ) : (
           <>
-            <h1>Forgot Password.</h1>
-            <p>
-              Enter the email address associated with your account to receive a
-              link to reset your password.
+            <h6 className="text-center">Forgot yout password?</h6>
+            <p className="text-night opacity-30 text-center mt-2 text-xs">
+              We’ll send a link to your email to reset your password.
             </p>
-            <br />
             <Form method="POST">
               <fieldset>
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">Email address</label>
                 <input
                   aria-label="Email address"
                   autoComplete="email"
@@ -82,28 +81,20 @@ export default function Recover() {
                   autoFocus
                   id="email"
                   name="email"
-                  placeholder="Email address"
+                  placeholder="Enter email address here"
                   required
                   type="email"
                 />
               </fieldset>
-              {action?.error ? (
-                <p>
+              {action?.error && (
+                <p className="mt-3">
                   <mark>
                     <small>{action.error}</small>
                   </mark>
                 </p>
-              ) : (
-                <br />
               )}
-              <button type="submit">Request Reset Link</button>
+              <button type="submit">send email</button>
             </Form>
-            <div>
-              <br />
-              <p>
-                <Link to="/account/login">Login →</Link>
-              </p>
-            </div>
           </>
         )}
       </div>

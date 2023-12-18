@@ -1,6 +1,10 @@
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {useLoaderData, type MetaFunction} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
+import {ARTICLE_QUERY} from '~/queries/article';
+import instagram from '~/assets/Instagram.svg';
+import twitter from '~/assets/Twitter.svg';
+import youbute from '~/assets/youtube.svg';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.article.title ?? ''} article`}];
@@ -22,12 +26,12 @@ export async function loader({params, context}: LoaderFunctionArgs) {
   }
 
   const article = blog.articleByHandle;
-
-  return json({article});
+  const blogTitle = blog.title;
+  return json({article, blogTitle});
 }
 
 export default function Article() {
-  const {article} = useLoaderData<typeof loader>();
+  const {article, blogTitle} = useLoaderData<typeof loader>();
   const {title, image, contentHtml, author} = article;
 
   const publishedDate = new Intl.DateTimeFormat('en-US', {
@@ -37,51 +41,37 @@ export default function Article() {
   }).format(new Date(article.publishedAt));
 
   return (
-    <div className="article">
-      <h1>
-        {title}
-        <span>
-          {publishedDate} &middot; {author?.name}
-        </span>
-      </h1>
-
-      {image && <Image data={image} sizes="90vw" loading="eager" />}
-      <div
-        dangerouslySetInnerHTML={{__html: contentHtml}}
-        className="article"
-      />
+    <div className="pt-28 pb-14 md:py-36">
+      <div className="con max-w-[926px]">
+        {image && (
+          <Image
+            data={image}
+            sizes="(min-width: 768px) 100vw, 90vw"
+            loading="eager"
+            className="rounded-xl md:rounded-lg"
+          />
+        )}
+        <div className="flex flex-col items-start md:items-center">
+          <p className="badge mt-7 md:mt-10">{blogTitle}</p>
+          <h3 className="mt-2 md:mt-4 md:text-center">{title}</h3>
+          <p className="small mt-5 md:mt-8 normal-case">Share this article</p>
+          <div className="flex items-center space-x-3 mt-2">
+            <a href="#" className="article-share">
+              <img src={instagram} alt="share instagram" />
+            </a>
+            <a href="#" className="article-share">
+              <img src={twitter} alt="share twitter" />
+            </a>
+            <a href="#" className="article-share">
+              <img src={youbute} alt="share youtube" />
+            </a>
+          </div>
+        </div>
+        <div
+          dangerouslySetInnerHTML={{__html: contentHtml}}
+          className="max-w-[720px] mt-16 md:mt-28 mx-auto w-full article"
+        />
+      </div>
     </div>
   );
 }
-
-// NOTE: https://shopify.dev/docs/api/storefront/latest/objects/blog#field-blog-articlebyhandle
-const ARTICLE_QUERY = `#graphql
-  query Article(
-    $articleHandle: String!
-    $blogHandle: String!
-    $country: CountryCode
-    $language: LanguageCode
-  ) @inContext(language: $language, country: $country) {
-    blog(handle: $blogHandle) {
-      articleByHandle(handle: $articleHandle) {
-        title
-        contentHtml
-        publishedAt
-        author: authorV2 {
-          name
-        }
-        image {
-          id
-          altText
-          url
-          width
-          height
-        }
-        seo {
-          description
-          title
-        }
-      }
-    }
-  }
-` as const;

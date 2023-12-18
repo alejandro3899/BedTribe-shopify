@@ -107,60 +107,62 @@ export default function Register() {
   const data = useActionData<ActionResponse>();
   const error = data?.error || null;
   return (
-    <div className="login">
-      <h1>Register.</h1>
-      <Form method="POST">
-        <fieldset>
-          <label htmlFor="email">Email address</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="Email address"
-            aria-label="Email address"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus
-          />
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            placeholder="Password"
-            aria-label="Password"
-            minLength={8}
-            required
-          />
-          <label htmlFor="passwordConfirm">Re-enter password</label>
-          <input
-            id="passwordConfirm"
-            name="passwordConfirm"
-            type="password"
-            autoComplete="current-password"
-            placeholder="Re-enter password"
-            aria-label="Re-enter password"
-            minLength={8}
-            required
-          />
-        </fieldset>
-        {error ? (
-          <p>
-            <mark>
-              <small>{error}</small>
-            </mark>
+    <div className="con h-screen relative">
+      <div className="center w-full max-w-[450px] bg-cream px-7 py-10 rounded-lg account">
+        <h6 className="text-center">Create an account</h6>
+        <Form method="POST">
+          <fieldset>
+            <label htmlFor="email">Email address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="Enter email address here"
+              aria-label="Email address"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus
+            />
+            <label htmlFor="password">Enter Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Enter password"
+              aria-label="Password"
+              minLength={8}
+              required
+            />
+            <label htmlFor="passwordConfirm">Re-type password</label>
+            <input
+              id="passwordConfirm"
+              name="passwordConfirm"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Re-enter password"
+              aria-label="Re-enter password"
+              minLength={8}
+              required
+            />
+          </fieldset>
+          {error && (
+            <p className="mt-3">
+              <mark>
+                <small>{error}</small>
+              </mark>
+            </p>
+          )}
+          <button type="submit">Sign up</button>
+        </Form>
+        <div className="flex justify-center">
+          <p className="mt-3 text-xs text-center w-60 [&_a]:underline underline-offset-2">
+            By creating an account, you agree to our{' '}
+            <a href="#">Privacy Policy</a> and <a href="#">Terms</a>.
           </p>
-        ) : (
-          <br />
-        )}
-        <button type="submit">Register</button>
-      </Form>
-      <br />
-      <p>
-        <Link to="/account/login">Login →</Link>
-      </p>
+        </div>
+      </div>
     </div>
   );
 }

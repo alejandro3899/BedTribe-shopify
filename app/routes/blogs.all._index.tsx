@@ -6,58 +6,47 @@ import {
   NavLink,
 } from '@remix-run/react';
 import {
-  Image,
   Pagination,
   flattenConnection,
   getPaginationVariables,
 } from '@shopify/hydrogen';
-import {BLOG_ARTICLES_QUERY, BLOGS_QUERY} from '~/queries/blog';
+import {ALL_ARTICLES_QUERY, BLOGS_QUERY} from '~/queries/blog';
 import {Swiper, SwiperSlide} from 'swiper/react';
 import {FreeMode} from 'swiper/modules';
 
-export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `${data?.blog.title ?? ''} blog`}];
+export const meta: MetaFunction = () => {
+  return [{title: `Bedtribe Magazine`}];
 };
 
 export const loader = async ({
   request,
-  params,
   context: {storefront},
 }: LoaderFunctionArgs) => {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 7,
   });
 
-  if (!params.blogHandle) {
-    throw new Response(`blog not found`, {status: 404});
-  }
-
   const {blogs} = await storefront.query(BLOGS_QUERY);
-  const {blog} = await storefront.query(BLOG_ARTICLES_QUERY, {
+
+  const {articles} = await storefront.query(ALL_ARTICLES_QUERY, {
     variables: {
-      handle: params.blogHandle,
       ...paginationVariables,
     },
   });
 
-  if (!blog?.articles) {
-    throw new Response('Not found', {status: 404});
-  }
-
-  return json({blog, blogs});
+  return json({blogs, articles});
 };
 
-export default function Blog() {
-  const {blog, blogs} = useLoaderData<typeof loader>();
-  const {articles} = blog;
+export default function Blogs() {
+  const {blogs, articles} = useLoaderData<typeof loader>();
 
   return (
     <div className="con pt-28 md:pt-32 pb-20 md:pb-16">
-      <h1>{blog.title}</h1>
+      <h1>The Bedtribe Magazine</h1>
       <div className="mt-5 md:mt-6">
         <div className="space-x-1 hidden md:flex">
           <NavLink
-            to="/blogs/all"
+            to="/blogs"
             className={({isActive}) =>
               `blog-category ${isActive ? 'active bg-black text-white' : ''}`
             }
@@ -84,7 +73,7 @@ export default function Blog() {
         >
           <SwiperSlide>
             <NavLink
-              to="/blogs/all"
+              to="/blogs"
               className={({isActive}) =>
                 `blog-category ${isActive ? 'active bg-black text-white' : ''}`
               }
@@ -155,65 +144,40 @@ export default function Blog() {
             );
           }}
         </Pagination>
-      </div>{' '}
+      </div>
     </div>
   );
 }
 
-// // NOTE: https://shopify.dev/docs/api/storefront/latest/objects/blog
 // const BLOGS_QUERY = `#graphql
-//   query Blog(
-//     $language: LanguageCode
-//     $blogHandle: String!
+//   query Blogs(
+//     $country: CountryCode
+//     $endCursor: String
 //     $first: Int
+//     $language: LanguageCode
 //     $last: Int
 //     $startCursor: String
-//     $endCursor: String
-//   ) @inContext(language: $language) {
-//     blog(handle: $blogHandle) {
-//       title
-//       seo {
+//   ) @inContext(country: $country, language: $language) {
+//     blogs(
+//       first: $first,
+//       last: $last,
+//       before: $startCursor,
+//       after: $endCursor
+//     ) {
+//       pageInfo {
+//         hasNextPage
+//         hasPreviousPage
+//         startCursor
+//         endCursor
+//       }
+//       nodes {
 //         title
-//         description
-//       }
-//       articles(
-//         first: $first,
-//         last: $last,
-//         before: $startCursor,
-//         after: $endCursor
-//       ) {
-//         nodes {
-//           ...ArticleItem
+//         handle
+//         seo {
+//           title
+//           description
 //         }
-//         pageInfo {
-//           hasPreviousPage
-//           hasNextPage
-//           hasNextPage
-//           endCursor
-//           startCursor
-//         }
-
 //       }
-//     }
-//   }
-//   fragment ArticleItem on Article {
-//     author: authorV2 {
-//       name
-//     }
-//     contentHtml
-//     handle
-//     id
-//     image {
-//       id
-//       altText
-//       url
-//       width
-//       height
-//     }
-//     publishedAt
-//     title
-//     blog {
-//       handle
 //     }
 //   }
 // ` as const;

@@ -19,22 +19,15 @@ export type LayoutProps = {
   children?: React.ReactNode;
   footer: Promise<FooterQuery>;
   header: HeaderQuery;
-  isLoggedIn: boolean;
 };
 
-export function Layout({
-  cart,
-  children = null,
-  footer,
-  header,
-  isLoggedIn,
-}: LayoutProps) {
+export function Layout({cart, children = null, footer, header}: LayoutProps) {
   return (
     <>
-      <CartAside cart={cart} />
-      <SearchAside />
-      <MobileMenuAside menu={header.menu} shop={header.shop} />
-      <Header header={header} cart={cart} isLoggedIn={isLoggedIn} />
+      {/* <CartAside cart={cart} /> */}
+      {/* <SearchAside /> */}
+      {/* <MobileMenuAside menu={header.menu} shop={header.shop} /> */}
+      <Header header={header} cart={cart} />
       <main>{children}</main>
       <Suspense>
         <Await resolve={footer}>
@@ -95,11 +88,7 @@ function MobileMenuAside({
 }) {
   return (
     <Aside id="mobile-menu-aside" heading="MENU">
-      <HeaderMenu
-        menu={menu}
-        viewport="mobile"
-        primaryDomainUrl={shop.primaryDomain.url}
-      />
+      <HeaderMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
     </Aside>
   );
 }
