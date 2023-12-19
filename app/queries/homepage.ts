@@ -238,6 +238,7 @@ export const HOMEPAGE_PROMISES = `#graphql
   fragment HomepagePromiseItem on Metaobject {
     id
     text: field(key: "text") { value }
+    desc: field(key: "description") { value }
     icon: field(key: "icon") {
       reference {
         ... on MediaImage {

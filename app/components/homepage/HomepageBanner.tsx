@@ -10,7 +10,7 @@ export default function HomepageBanner({data}: {data: HomepageBannerQuery}) {
           data={data.metaobject.imageD.reference.image}
           sizes="100vw"
           alt="homepage desktop banner"
-          className="hidden md:block w-full h-full object-cover object-center"
+          className="hidden md:block w-full h-full object-cover object-center rounded-lg"
         />
       )}
       {data.metaobject?.imageM?.reference?.image && (
@@ -18,7 +18,7 @@ export default function HomepageBanner({data}: {data: HomepageBannerQuery}) {
           data={data.metaobject.imageM.reference.image}
           sizes="100vw"
           alt="homepage mobile banner"
-          className="block md:hidden w-full h-full object-cover object-center"
+          className="block md:hidden w-full h-full object-cover object-center rounded-xl"
         />
       )}
       <div className="absolute inset-0">

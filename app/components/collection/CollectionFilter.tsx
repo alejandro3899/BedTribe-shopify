@@ -6,7 +6,7 @@ export default function CollectionFilter({
   available: string | null;
 }) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center space-x-2">
       <span>Filter</span>
       <div className="p-1 rounded-full bg-cream">
         <img src={filter} className="w-3 h-3" />

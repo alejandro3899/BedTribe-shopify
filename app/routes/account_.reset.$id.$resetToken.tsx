@@ -65,46 +65,49 @@ export default function Reset() {
 
   return (
     <div className="con h-screen relative">
-      <div className="center w-full max-w-[450px] bg-cream px-7 py-10 rounded-lg account">
-        <h6>Reset your password</h6>
-        <Form method="POST">
-          <fieldset>
-            <label htmlFor="password">New Password</label>
-            <input
-              aria-label="Password"
-              autoComplete="current-password"
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus
-              id="password"
-              minLength={8}
-              name="password"
-              placeholder="Enter new password here"
-              required
-              type="password"
-            />
-            <label htmlFor="passwordConfirm">Re-enter password</label>
-            <input
-              aria-label="Re-enter password"
-              autoComplete="current-password"
-              id="passwordConfirm"
-              minLength={8}
-              name="passwordConfirm"
-              placeholder="Re-enter password"
-              required
-              type="password"
-            />
-          </fieldset>
-          {action?.error ? (
-            <p className="mt-3">
-              <mark>
-                <small>{action.error}</small>
-              </mark>
-            </p>
-          ) : (
-            <br />
-          )}
-          <button type="submit">Reset</button>
-        </Form>
+      <div className="relative h-full">
+        <div className="center w-full max-w-[450px] bg-cream px-7 py-10 rounded-lg account">
+          <h6 className="text-center hidden md:block">Reset your password</h6>
+          <h4 className="text-center md:hidden">Reset your password</h4>
+          <Form method="POST">
+            <fieldset>
+              <label htmlFor="password">New Password</label>
+              <input
+                aria-label="Password"
+                autoComplete="current-password"
+                // eslint-disable-next-line jsx-a11y/no-autofocus
+                autoFocus
+                id="password"
+                minLength={8}
+                name="password"
+                placeholder="Enter new password here"
+                required
+                type="password"
+              />
+              <label htmlFor="passwordConfirm">Re-enter password</label>
+              <input
+                aria-label="Re-enter password"
+                autoComplete="current-password"
+                id="passwordConfirm"
+                minLength={8}
+                name="passwordConfirm"
+                placeholder="Re-enter password"
+                required
+                type="password"
+              />
+            </fieldset>
+            {action?.error ? (
+              <p className="mt-3">
+                <mark>
+                  <small>{action.error}</small>
+                </mark>
+              </p>
+            ) : (
+              <br />
+            )}
+            <button type="submit">Reset</button>
+          </Form>
+        </div>
       </div>
     </div>
   );

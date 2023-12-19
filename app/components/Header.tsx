@@ -88,7 +88,7 @@ function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
       role="navigation"
     >
       <SearchToggle />
-      <NavLink prefetch="intent" to="/account">
+      <NavLink to="/account">
         <img src={account} alt="header account" />
       </NavLink>
       <CartToggle cart={cart} />

@@ -1,110 +1,96 @@
-import {NavLink} from '@remix-run/react';
+import {Link} from '@remix-run/react';
+import {flattenConnection} from '@shopify/hydrogen';
+import Marquee from 'react-fast-marquee';
 import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
-import {useRootLoaderData} from '~/root';
 
 export function Footer({
-  menu,
+  metaobject,
   shop,
 }: FooterQuery & {shop: HeaderQuery['shop']}) {
+  if (!metaobject) return null;
+
   return (
-    <footer className="footer">
-      <FooterMenu menu={menu} primaryDomainUrl={shop.primaryDomain.url} />
+    <footer className="h-[300px] md:h-[310px] flex flex-col">
+      <div className="bg-cream grow">
+        <div className="con py-5 h-full">
+          <div className="flex flex-col jutify-between h-full">
+            <h6 className="max-w-[270px] md:max-w-[400px]">
+              {metaobject.desc?.value || ''}
+            </h6>
+            <div className="flex flex-col justify-end items-stretch grow">
+              <div className="flex flex-col items-start md:flex-row grow justify-between md:items-end pt-8">
+                <FooterMenu
+                  metaobject={metaobject}
+                  primaryDomainUrl={shop.primaryDomain.url}
+                />
+                <SingupNewsLetter />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="py-[10px]">
+        <Marquee>
+          <div className="flex space-x-10">
+            {metaobject.marqueeTexts?.value &&
+              [
+                ...(JSON.parse(metaobject.marqueeTexts.value) as string[]),
+                ...(JSON.parse(metaobject.marqueeTexts.value) as string[]),
+              ].map((marqueeText, index) => (
+                <div className="font-mono text-16 md:text-28" key={index}>
+                  {marqueeText}
+                </div>
+              ))}
+          </div>
+        </Marquee>
+      </div>
     </footer>
   );
 }
 
 function FooterMenu({
-  menu,
-  primaryDomainUrl,
+  metaobject,
 }: {
-  menu: FooterQuery['menu'];
+  metaobject: FooterQuery['metaobject'];
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
 }) {
-  const {publicStoreDomain} = useRootLoaderData();
-
   return (
-    <nav className="footer-menu" role="navigation">
-      {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        const isExternal = !url.startsWith('/');
-        return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank">
-            {item.title}
-          </a>
-        ) : (
-          <NavLink
-            end
-            key={item.id}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
-    </nav>
+    <div className="flex flex-wrap md:flex-nowrap md:space-x-5 lg:space-x-8">
+      <span className="py-1 md:py-0 w-1/2 whitespace-nowrap md:w-fit text-xs md:text-sm">
+        &copy;{new Date().getFullYear()} Bedtribe
+      </span>
+      {metaobject?.socialLinks?.references &&
+        flattenConnection(metaobject.socialLinks.references).map(
+          (socialLink) => (
+            <Link
+              key={socialLink.id}
+              className="py-1 md:py-0 w-1/2 whitespace-nowrap md:w-fit text-xs md:text-sm"
+              to={socialLink.url?.value || '#'}
+            >
+              {socialLink.title?.value || ''}
+            </Link>
+          ),
+        )}
+    </div>
   );
 }
 
-const FALLBACK_FOOTER_MENU = {
-  id: 'gid://shopify/Menu/199655620664',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461633060920',
-      resourceId: 'gid://shopify/ShopPolicy/23358046264',
-      tags: [],
-      title: 'Privacy Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/privacy-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633093688',
-      resourceId: 'gid://shopify/ShopPolicy/23358013496',
-      tags: [],
-      title: 'Refund Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/refund-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633126456',
-      resourceId: 'gid://shopify/ShopPolicy/23358111800',
-      tags: [],
-      title: 'Shipping Policy',
-      type: 'SHOP_POLICY',
-      url: '/policies/shipping-policy',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461633159224',
-      resourceId: 'gid://shopify/ShopPolicy/23358079032',
-      tags: [],
-      title: 'Terms of Service',
-      type: 'SHOP_POLICY',
-      url: '/policies/terms-of-service',
-      items: [],
-    },
-  ],
+const SingupNewsLetter = () => {
+  return (
+    <div className="flex items-center justify-between md:justify-end w-full">
+      <label htmlFor="email">
+        <span className="text-11 md:text-sm">Newsletter</span>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          className="bg-transparent ml-3 placeholder:text-dusk text-11 focus:outline-none"
+          placeholder="Enter email address"
+        />
+      </label>
+      <button className="normal-case text-11 md:text-sm font-sans py-0 px-3">
+        Sing Up
+      </button>
+    </div>
+  );
 };
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
-  };
-}

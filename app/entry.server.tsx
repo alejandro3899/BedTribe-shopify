@@ -10,7 +10,9 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy();
+  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+    fontSrc: ["'self'", 'data:', 'http://localhost:3100'],
+  });
 
   const body = await renderToReadableStream(
     <NonceProvider>

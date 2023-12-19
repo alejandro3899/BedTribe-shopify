@@ -15,41 +15,35 @@ export const BLOGS_QUERY = `#graphql
   }
 ` as const;
 
+export const ARTICLE_FRAGMENT = `#graphql
+  fragment ArticleItem on Article {
+    title
+    tags
+    handle
+    publishedAt
+    image {
+      url
+      width
+      height
+      altText
+    }
+    blog {
+      handle
+      title
+    }
+  }
+` as const;
+
 export const ALL_ARTICLES_QUERY = `#graphql
+  ${ARTICLE_FRAGMENT}
   query AllArticles(
     $country: CountryCode,
     $language: LanguageCode,
-    $first: Int,
-    $last: Int,
-    $startCursor: String,
-    $endCursor: String
   ) @inContext(country: $country, language: $language) {
-    articles(
-      first: $first,
-      last: $last,
-      before: $startCursor,
-      after: $endCursor
-    ) {
-      pageInfo {
-        hasNextPage
-        hasPreviousPage
-        startCursor
-        endCursor
-      }
-      nodes {
-        title
-        tags
-        handle
-        publishedAt
-        image {
-          url
-          width
-          height
-          altText
-        }
-        blog {
-          handle
-          title
+    articles(first: 250) {
+      edges {
+        node {
+          ...ArticleItem
         }
       }
     }
@@ -57,44 +51,17 @@ export const ALL_ARTICLES_QUERY = `#graphql
 ` as const;
 
 export const BLOG_ARTICLES_QUERY = `#graphql
+  ${ARTICLE_FRAGMENT}
   query BlogByHandle(
     $country: CountryCode,
     $language: LanguageCode,
-    $handle: String,
-    $first: Int,
-    $last: Int,
-    $startCursor: String,
-    $endCursor: String
+    $handle: String
   ) @inContext(country: $country, language: $language) {
     blog(handle: $handle) {
       title
-      articles(
-        first: $first,
-        last: $last,
-        before: $startCursor,
-        after: $endCursor
-      ) {
-        pageInfo {
-          hasNextPage
-          hasPreviousPage
-          startCursor
-          endCursor
-        }
+      articles(first: 250) {
         nodes {
-          id
-          title
-          handle
-          publishedAt
-          image {
-            url
-            width
-            height
-            altText
-          }
-          blog {
-            handle
-            title
-          }
+          ...ArticleItem
         }
       }
     }

@@ -9,6 +9,7 @@ export default {
       cover: 'cover',
       contain: 'contain',
       '50%': '50%',
+      '80%': '80%',
     },
     extend: {
       colors: {

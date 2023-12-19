@@ -105,7 +105,7 @@
     @apply font-sans w-full rounded-full bg-[#E7E7E7] px-5 py-3 text-xs placeholder:text-dusk leading-[17px];
   }
   .account button {
-    @apply font-sans bg-noir text-cream text-11 md:text-xs leading-none mt-8 w-full px-4 py-3 rounded-full uppercase;
+    @apply font-sans bg-noir text-cream text-sm md:text-xs leading-none mt-8 w-full px-4 py-3 rounded-full uppercase;
   }
   button,
   .button {
