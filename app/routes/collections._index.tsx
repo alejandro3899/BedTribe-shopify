@@ -19,28 +19,36 @@ export default function Collections() {
   const {collections} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collections">
-      <h1>Collections</h1>
-      <Pagination connection={collections}>
-        {({nodes, isLoading, PreviousLink, NextLink}) => (
-          <div>
-            <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
-            </PreviousLink>
-            <CollectionsGrid collections={nodes} />
-            <NextLink>
-              {isLoading ? 'Loading...' : <span>Load more ↓</span>}
-            </NextLink>
-          </div>
-        )}
-      </Pagination>
+    <div className="pt-28 md:pt-32 pb-10 md:pb-8">
+      <div className="con">
+        <h1 className="text-center">Collections</h1>
+        <div className="mt-12 md:mt-10">
+          <Pagination connection={collections}>
+            {({nodes, isLoading, PreviousLink, NextLink}) => (
+              <>
+                <div className="mt-10 flex justify-center">
+                  <PreviousLink className="button bg-transparent border border-noir">
+                    {isLoading ? 'Loading...' : <span>Load previous</span>}
+                  </PreviousLink>
+                </div>
+                <CollectionsGrid collections={nodes} />
+                <div className="mt-10 flex justify-center">
+                  <NextLink className="button bg-transparent border border-noir">
+                    {isLoading ? 'Loading...' : <span>Load more</span>}
+                  </NextLink>
+                </div>
+              </>
+            )}
+          </Pagination>
+        </div>
+      </div>
     </div>
   );
 }
 
 function CollectionsGrid({collections}: {collections: CollectionFragment[]}) {
   return (
-    <div className="collections-grid">
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-x-1 gap-y-8 md:gap-x-5 md:gap-y-12">
       {collections.map((collection, index) => (
         <CollectionItem
           key={collection.id}
@@ -66,15 +74,11 @@ function CollectionItem({
       to={`/collections/${collection.handle}`}
       prefetch="intent"
     >
-      {collection?.image && (
-        <Image
-          alt={collection.image.altText || collection.title}
-          aspectRatio="1/1"
-          data={collection.image}
-          loading={index < 3 ? 'eager' : undefined}
-        />
-      )}
-      <h5>{collection.title}</h5>
+      <div
+        className="pb-[100%] bg-cover cg-center"
+        style={{backgroundImage: `url(${collection.image?.url || ''})`}}
+      ></div>
+      <p className="text-sm mt-[14px]">{collection.title}</p>
     </Link>
   );
 }

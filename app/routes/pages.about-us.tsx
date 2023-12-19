@@ -1,5 +1,4 @@
 import {type LoaderFunctionArgs, defer} from '@remix-run/server-runtime';
-import about3 from '../assets/about3.png';
 import {
   ABOUT_DESCRIPTION_1,
   ABOUT_DESCRIPTION_2,

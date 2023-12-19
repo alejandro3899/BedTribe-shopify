@@ -15,7 +15,7 @@ type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 export function Header({header, cart}: HeaderProps) {
   const {menu} = header;
   return (
-    <header className="absolute top-5 left-5 right-5 bg-cream rounded-lg px-3 md:px-5 h-10 md:h-12">
+    <header className="fixed top-5 left-5 right-5 bg-cream rounded-lg px-3 md:px-5 h-10 md:h-12 z-50">
       <NavLink
         prefetch="intent"
         to="/"

@@ -18,6 +18,7 @@ export default {
         zap: '#282828',
         dusk: '#888B8E',
         night: '#353535',
+        slumber: '#1D2840',
         'product-card': '#F0F0F0',
       },
       fontSize: {

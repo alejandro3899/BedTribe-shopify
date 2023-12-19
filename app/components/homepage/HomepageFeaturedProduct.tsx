@@ -1,4 +1,4 @@
-import {Image} from '@shopify/hydrogen';
+import {Image, Money} from '@shopify/hydrogen';
 import {HomepageFeaturedProductQuery} from 'storefrontapi.generated';
 
 export default function HomepageFeaturedProduct({
@@ -12,7 +12,7 @@ export default function HomepageFeaturedProduct({
     <div className="con pt-5 pb-10 md:pt-6 md:pb-9">
       <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
         <div
-          className="pb-[142%] relative bg-center bg-cover"
+          className="pb-[142%] relative bg-center bg-cover rounded-lg"
           style={{
             backgroundImage: `url(${
               featuredProductData.image?.reference?.image?.url || ''
@@ -30,6 +30,31 @@ export default function HomepageFeaturedProduct({
             </div>
           </div>
         </div>
+        {featuredProductData.product?.reference && (
+          <div className="relative h-fit">
+            <div
+              className="pb-[100%] bg-center bg-50% bg-no-repeat rounded-lg self-baseline bg-product-card"
+              style={{
+                backgroundImage: `url(${
+                  featuredProductData.product?.reference?.featuredImage?.url ||
+                  ''
+                })`,
+              }}
+            ></div>
+            <div className="md:absolute md:inset-0 md:flex md:flex-col md:justify-between md:items-stretch md:p-7 mt-3 md:mt-0">
+              <div className="flex items-center justify-between">
+                <p>{featuredProductData.product?.reference?.title || ''}</p>
+              </div>
+              <Money
+                className="text"
+                data={
+                  featuredProductData.product.reference.priceRange
+                    .minVariantPrice
+                }
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

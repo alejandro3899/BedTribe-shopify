@@ -111,4 +111,20 @@
   .button {
     @apply text-xs uppercase px-6 py-4 rounded-full !leading-[8px] -tracking-[.12px];
   }
+  .contact-form::before {
+    @apply absolute inset-0 block rounded-xl;
+  }
+  .contact-form input,
+  .contact-form select {
+    @apply !leading-[20px] md:!leading-[23px] px-5 py-3 rounded-full w-full appearance-none focus:outline-none;
+  }
+  .contact-form textarea {
+    @apply !leading-[20px] md:!leading-[23px] px-5 py-3 rounded-xl w-full  appearance-none focus:outline-none;
+  }
+}
+
+.contact-form::before {
+  content: '';
+  backdrop-filter: blur(80px);
+  background: rgba(246, 245, 242, 0.3);
 }

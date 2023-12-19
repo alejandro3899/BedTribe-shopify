@@ -31,7 +31,7 @@ export default function AboutFeaturedProduct({
           </div>
         </div>
         {featuredProductData.product?.reference && (
-          <div className="relative">
+          <div className="relative h-fit">
             <div
               className="pb-[100%] bg-center bg-50% bg-no-repeat rounded-lg self-baseline bg-product-card"
               style={{
@@ -41,7 +41,7 @@ export default function AboutFeaturedProduct({
                 })`,
               }}
             ></div>
-            <div className="md:absolute md:h-full md:flex md:flex-col md:justify-between md:items-stretch md:p-7 mt-3">
+            <div className="md:absolute md:inset-0 md:flex md:flex-col md:justify-between md:items-stretch md:p-7 mt-3 md:mt-0">
               <div className="flex items-center justify-between">
                 <p>{featuredProductData.product?.reference?.title || ''}</p>
               </div>

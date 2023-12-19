@@ -16,12 +16,14 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   type ShouldRevalidateFunction,
+  Link,
 } from '@remix-run/react';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import favicon from '../public/favicon.svg';
 import tailwindCSS from './tailwind.css';
 import swiperCSS from 'swiper/css';
 import {Layout} from '~/components/Layout';
+import svg404 from '~/assets/404.svg';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -154,14 +156,18 @@ export function ErrorBoundary() {
       </head>
       <body>
         <Layout {...rootData}>
-          <div className="route-error">
-            <h1>Oops</h1>
-            <h2>{errorStatus}</h2>
-            {errorMessage && (
-              <fieldset>
-                <pre>{errorMessage}</pre>
-              </fieldset>
-            )}
+          <div className="bg-slumber pt-28 pb-20">
+            <div className="con">
+              <div className="relative">
+                <img src={svg404} alt="404 page" className="w-full" />
+                <Link
+                  to="/"
+                  className="small text-cream absolute -bottom-1 right-0 underline underline-offset-4"
+                >
+                  Head back home
+                </Link>
+              </div>
+            </div>
           </div>
         </Layout>
         <ScrollRestoration nonce={nonce} />
