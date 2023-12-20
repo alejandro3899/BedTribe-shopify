@@ -8,6 +8,7 @@ import '@total-typescript/ts-reset';
 import type {Storefront, HydrogenCart} from '@shopify/hydrogen';
 import type {CustomerAccessToken} from '@shopify/hydrogen/storefront-api-types';
 import type {HydrogenSession} from './server';
+import {ColorsQuery} from 'storefrontapi.generated';
 
 declare global {
   /**
@@ -38,6 +39,7 @@ declare module '@shopify/remix-oxygen' {
     cart: HydrogenCart;
     storefront: Storefront;
     session: HydrogenSession;
+    colors: ColorsQuery;
     waitUntil: ExecutionContext['waitUntil'];
   }
 

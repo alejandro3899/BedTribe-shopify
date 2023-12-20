@@ -1,6 +1,34 @@
 import {PRODUCT_ITEM_FRAGMENT} from './collection';
 import {FAQ_ITEM_FRAGMENT} from './global';
 
+export const COLORS_QUERY = `#graphql
+  query Colors(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    metaobjects(first: 250, type: "global_colors_list") {
+      edges {
+        node {
+          id
+          name: field(key: "color_name") { value },
+          svg: field(key: "svg") {
+            reference {
+              ... on MediaImage {
+                image {
+                  url
+                  width
+                  height
+                  altText
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+` as const;
+
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {
     availableForSale

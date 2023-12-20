@@ -26,6 +26,7 @@ import {Layout} from '~/components/Layout';
 import svg404 from '~/assets/404.svg';
 import {FOOTER_QUERY} from './queries/footer';
 import {HEADER_QUERY} from './queries/header';
+import {COLORS_QUERY} from './queries/pdp';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -83,6 +84,8 @@ export async function loader({context}: LoaderFunctionArgs) {
   // defer the cart query by not awaiting it
   const cartPromise = cart.get();
 
+  const colors = await storefront.query(COLORS_QUERY);
+
   // defer the footer query (below the fold)
   const footerPromise = storefront.query(FOOTER_QUERY, {
     cache: storefront.CacheLong(),
@@ -99,6 +102,7 @@ export async function loader({context}: LoaderFunctionArgs) {
   return defer(
     {
       cart: cartPromise,
+      colors: colors,
       footer: footerPromise,
       header: await headerPromise,
       publicStoreDomain,

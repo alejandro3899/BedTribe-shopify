@@ -42,6 +42,7 @@ import ProductCommunity from '~/components/pdp/ProductCommunity';
 import ProductFaqs from '~/components/pdp/ProductFaqs';
 import RecommendedProducts from '~/components/pdp/RecommendedProducts';
 import ProductLearnMore from '~/components/pdp/ProductLearnMore';
+import {useRootLoaderData} from '~/root';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
@@ -356,6 +357,8 @@ function ProductOptions({
   option: VariantOption;
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
+  const {colors} = useRootLoaderData();
+  console.log(colors);
   return (
     <div
       className={`${
@@ -375,24 +378,51 @@ function ProductOptions({
             )?.value || ''}
           </span>
         </p>
-        <div className="flex -ml-1 -mt-2 flex-wrap">
-          {option.values.map(({value, isAvailable, isActive, to}) => {
-            return (
-              <Link
-                className={`text-xs md:text-sm px-4 py-2 rounded-full border border-noir mt-2 ml-1 whitespace-nowrap ${
-                  isActive ? 'bg-noir text-cream' : ''
-                } ${!isAvailable ? 'opacity-30' : ''}`}
-                key={option.name + value}
-                prefetch="intent"
-                preventScrollReset
-                replace
-                to={to}
-              >
-                {value}
-              </Link>
-            );
-          })}
-        </div>
+        {option.name.toUpperCase() !== 'COLOUR' ? (
+          <div className="flex -ml-1 -mt-2 flex-wrap">
+            {option.values.map(({value, isAvailable, isActive, to}) => {
+              return (
+                <Link
+                  className={`text-xs md:text-sm px-4 py-2 rounded-full border border-noir mt-2 ml-1 whitespace-nowrap ${
+                    isActive ? 'bg-noir text-cream' : ''
+                  } ${!isAvailable ? 'opacity-30' : ''}`}
+                  key={option.name + value}
+                  prefetch="intent"
+                  preventScrollReset
+                  replace
+                  to={to}
+                >
+                  {value}
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex -ml-2 -mt-3 flex-wrap w-full md:max-w-[220px]">
+            {option.values.map(({value, isAvailable, isActive, to}) => {
+              console.log(value);
+              const colorSvg = flattenConnection(colors.metaobjects).find(
+                (color) =>
+                  color.name?.value?.toUpperCase() === value.toUpperCase(),
+              )?.svg?.reference?.image;
+
+              return (
+                <Link
+                  className={`text-xs md:text-sm w-7 h-7 rounded-full border mt-3 ml-2 whitespace-nowrap ${
+                    isActive ? 'p-[2px] border-noir' : 'border-[#eee] p-0'
+                  } ${!isAvailable ? 'opacity-30' : ''}`}
+                  key={option.name + value}
+                  prefetch="intent"
+                  preventScrollReset
+                  replace
+                  to={to}
+                >
+                  {colorSvg && <Image data={colorSvg} sizes="28px" />}
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
