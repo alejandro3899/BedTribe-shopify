@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import {defer, redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   Await,
@@ -286,7 +286,7 @@ function ProductForm({
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
-  const [quantity, setQuantity] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number>(1);
 
   return (
     <div className="flex flex-col">
@@ -303,18 +303,28 @@ function ProductForm({
           />
         )}
       </VariantSelector>
-      <div className="flex space-x-5 order-last mt-7 md:mt-10">
-        <div className="flex justify-between items-center border border-noir rounded-full px-5 py-4">
-          <img src={minusSvg} className="h-6 w-6 cursor-pointer" />
+      <div className="flex flex-wrap space-y-3 md:space-y-0 md:space-x-5 order-last mt-7 md:mt-10">
+        <div className="flex justify-between items-center border border-noir rounded-full h-11 md:h-14 w-full md:w-[200px] px-5">
+          <button
+            className="p-0"
+            onClick={() => setQuantity(quantity - 1)}
+            disabled={quantity === 1}
+          >
+            <img src={minusSvg} className="h-6 w-6 cursor-pointer" />
+          </button>
           <input
             type="number"
             name="quantity"
             id="quantity"
-            className="appearance-none w-20 h-6 focus:outline-none"
+            value={quantity}
+            onChange={(e) => setQuantity(parseInt(e.target.value))}
+            className="appearance-none w-20 h-6 focus:outline-none text-center"
           />
-          <img src={plusSvg} className="h-6 w-6 cursor-pointer" />
+          <button className="p-0" onClick={() => setQuantity(quantity + 1)}>
+            <img src={plusSvg} className="h-6 w-6 cursor-pointer" />
+          </button>
         </div>
-        <div>
+        <div className="w-full md:w-[200px]">
           <AddToCartButton
             disabled={!selectedVariant || !selectedVariant.availableForSale}
             onClick={() => {
@@ -325,7 +335,7 @@ function ProductForm({
                 ? [
                     {
                       merchandiseId: selectedVariant.id,
-                      quantity: 1,
+                      quantity: quantity,
                     },
                   ]
                 : []
@@ -411,6 +421,7 @@ function AddToCartButton({
             value={JSON.stringify(analytics)}
           />
           <button
+            className="border border-noir bg-noir text-cream font-sans text-16 md:text-20 h-11 md:h-14 w-full md:w-[200px] normal-case"
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
