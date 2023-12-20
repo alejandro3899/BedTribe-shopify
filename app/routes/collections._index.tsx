@@ -12,6 +12,7 @@ import {
   ProductCardItemFragment,
   ProductItemFragment,
 } from 'storefrontapi.generated';
+import ProductItemV1 from '~/components/ProductItemV1';
 
 export async function loader({context}: LoaderFunctionArgs) {
   const {metaobject} = await context.storefront.query(COLLECTIONS_QUERY);
@@ -87,7 +88,7 @@ export default function Collections() {
                             !collectionData.gridImage?.reference?.image)
                         )
                           return (
-                            <ProductItem
+                            <ProductItemV1
                               product={product}
                               key={`${product.handle}_${index}`}
                             />
@@ -119,7 +120,7 @@ export default function Collections() {
                           }
                           if (gridImageSize === 2 && index === 1) return null;
                           return (
-                            <ProductItem
+                            <ProductItemV1
                               product={product}
                               key={`${product.handle}_${index}`}
                             />
@@ -136,29 +137,3 @@ export default function Collections() {
     </div>
   );
 }
-
-const ProductItem = ({product}: {product: ProductItemFragment}) => {
-  const badgeTag = product.tags.find((tag) => tag.includes('badge:'));
-
-  return (
-    <Link className="relative block" to={`/products/${product.handle}`}>
-      <div
-        className="pb-[120%] bg-product-card bg-80% bg-center bg-no-repeat rounded-lg"
-        style={{backgroundImage: `url(${product.featuredImage?.url || ''})`}}
-      ></div>
-      <div className="mt-3 md:mt-0 md:absolute md:p-7 md:inset-0 md:flex md:flex-col md:justify-between">
-        <div className="flex items-center justify-between space-x-10">
-          <p className="text-sm md:text-lg">{product.title}</p>
-          {badgeTag && (
-            <p className="badge uppercase text-11 hidden md:block">
-              {badgeTag.split('badge:')[1]}
-            </p>
-          )}
-        </div>
-        <div className="text text-sm md:text-lg">
-          <Money data={product.priceRange.minVariantPrice} />
-        </div>
-      </div>
-    </Link>
-  );
-};

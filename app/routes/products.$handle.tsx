@@ -15,6 +15,7 @@ import {
   type VariantOption,
   getSelectedProductOptions,
   CartForm,
+  flattenConnection,
 } from '@shopify/hydrogen';
 import type {
   CartLineInput,
@@ -22,12 +23,22 @@ import type {
 } from '@shopify/hydrogen/storefront-api-types';
 import {getVariantUrl} from '~/utils';
 import ProductProperties from '~/components/pdp/ProductProperties';
-import {PRODUCT_QUERY, VARIANTS_QUERY} from '~/queries/pdp';
+import {
+  PRODUCT_COMMUNITY,
+  PRODUCT_QUERY,
+  VARIANTS_QUERY,
+  RECOMMENDED_PRODUCTS_QUERY,
+} from '~/queries/pdp';
 import {
   ProductFragment,
   ProductVariantFragment,
   ProductVariantsQuery,
 } from 'storefrontapi.generated';
+import ProductFeaturesSlider from '~/components/pdp/ProductFeaturesSlider';
+import ProductUSP from '~/components/pdp/ProductUSP';
+import ProductCommunity from '~/components/pdp/ProductCommunity';
+import ProductFaqs from '~/components/pdp/ProductFaqs';
+import RecommendedProducts from '~/components/pdp/RecommendedProducts';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
@@ -57,6 +68,11 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
   const {product} = await storefront.query(PRODUCT_QUERY, {
     variables: {handle, selectedOptions},
   });
+
+  const communityPromise = storefront.query(PRODUCT_COMMUNITY);
+  const recommendedProductsPromise = storefront.query(
+    RECOMMENDED_PRODUCTS_QUERY,
+  );
 
   if (!product?.id) {
     throw new Response(null, {status: 404});
@@ -89,7 +105,12 @@ export async function loader({params, request, context}: LoaderFunctionArgs) {
     variables: {handle},
   });
 
-  return defer({product, variants});
+  return defer({
+    product,
+    variants,
+    communityPromise,
+    recommendedProductsPromise,
+  });
 }
 
 function redirectToFirstVariant({
@@ -116,10 +137,11 @@ function redirectToFirstVariant({
 }
 
 export default function Product() {
-  const {product, variants} = useLoaderData<typeof loader>();
+  const {product, variants, communityPromise, recommendedProductsPromise} =
+    useLoaderData<typeof loader>();
   const {selectedVariant} = product;
   return (
-    <div className="con">
+    <>
       <div className="product">
         <ProductImage image={selectedVariant?.image} />
         <ProductMain
@@ -128,8 +150,33 @@ export default function Product() {
           variants={variants}
         />
       </div>
-      <ProductProperties />
-    </div>
+      {product.properties?.references && (
+        <ProductProperties
+          data={flattenConnection(product.properties.references)}
+        />
+      )}
+      {product.featuresSlider?.references && (
+        <ProductFeaturesSlider
+          data={flattenConnection(product.featuresSlider.references)}
+        />
+      )}
+      {product.usp?.reference && <ProductUSP data={product.usp.reference} />}
+      <Suspense>
+        <Await resolve={communityPromise}>
+          {(metaobject) => <ProductCommunity data={metaobject} />}
+        </Await>
+      </Suspense>
+      <Suspense>
+        <Await resolve={recommendedProductsPromise}>
+          {(recommendedProducts) => (
+            <RecommendedProducts data={recommendedProducts} />
+          )}
+        </Await>
+      </Suspense>
+      {product.faqs?.references && (
+        <ProductFaqs data={flattenConnection(product.faqs.references)} />
+      )}
+    </>
   );
 }
 
