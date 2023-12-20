@@ -408,15 +408,18 @@ function ProductOptions({
 
               return (
                 <Link
-                  className={`text-xs md:text-sm w-7 h-7 rounded-full border mt-3 ml-2 whitespace-nowrap ${
+                  className={`text-xs md:text-sm w-7 h-7 rounded-full border mt-3 ml-2 whitespace-nowrap relative ${
                     isActive ? 'p-[2px] border-noir' : 'border-[#eee] p-0'
-                  } ${!isAvailable ? 'opacity-30' : ''}`}
+                  }`}
                   key={option.name + value}
                   prefetch="intent"
                   preventScrollReset
                   replace
                   to={to}
                 >
+                  {!isAvailable && (
+                    <div className="w-full border-t border-noir rotate-45 absolute left-0 right-0 top-1/2"></div>
+                  )}
                   {colorSvg && <Image data={colorSvg} sizes="28px" />}
                 </Link>
               );
