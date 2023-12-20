@@ -84,12 +84,13 @@ export function HeaderMenu({
 function HeaderCtas({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <nav
-      className="flex space-x-1 [&>*]:flex [&>*]:justify-center [&>*]:items-center"
+      className="flex space-x-1 md:space-x-5 [&>*]:flex [&>*]:justify-center [&>*]:items-center"
       role="navigation"
     >
       <SearchToggle />
       <NavLink to="/account">
-        <img src={account} alt="header account" />
+        <img src={account} alt="header account" className="block md:hidden" />
+        <p className="header-menu-item hidden md:block">Account</p>
       </NavLink>
       <CartToggle cart={cart} />
     </nav>
@@ -121,7 +122,7 @@ function HeaderMenuMobileToggle({
       >
         <div className="p-5 relative">
           <button
-            className="absolute top-5 right-5"
+            className="absolute top-5 right-5 p-0"
             onClick={() => setIsOpen(false)}
           >
             <img src={cross} alt="cross icon" />
@@ -160,7 +161,8 @@ function HeaderMenuMobileToggle({
 function SearchToggle() {
   return (
     <a href="#search-aside">
-      <img src={search} alt="header search" />
+      <img src={search} alt="header search" className="block md:hidden" />
+      <p className="header-menu-item hidden md:block">Search</p>
     </a>
   );
 }
@@ -168,7 +170,8 @@ function SearchToggle() {
 function CartBadge({count}: {count: number}) {
   return (
     <a href="#cart-aside">
-      <img src={cart} alt="header cart" />
+      <img src={cart} alt="header cart" className="block md:hidden" />
+      <p className="header-menu-item hidden md:block">Cart({count})</p>
     </a>
   );
 }
