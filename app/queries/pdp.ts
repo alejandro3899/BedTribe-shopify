@@ -57,6 +57,12 @@ const PRODUCT_FRAGMENT = `#graphql
     }
   }
 
+  fragment ProductLearnMoreItem on Metaobject {
+    id
+    title: field(key: "title") { value }
+    desc: field(key: "description") { value }
+  }
+
   fragment ProductFeaturesSliderItem on Metaobject {
     id
     title: field(key: "title") { value }
@@ -210,6 +216,16 @@ const PRODUCT_FRAGMENT = `#graphql
         }
       }
     }
+    learn_more: metafield(key: "learn_more_items", namespace: "custom") {
+      references(first: 10) {
+        edges {
+          node {
+            ...ProductLearnMoreItem
+          }
+        }
+      }
+    }
+    learn_more_title: metafield(key: "learn_more_title", namespace: "custom") { value }
   }
   ${PRODUCT_VARIANT_FRAGMENT}
   ${FAQ_ITEM_FRAGMENT}

@@ -34,11 +34,14 @@ import {
   ProductVariantFragment,
   ProductVariantsQuery,
 } from 'storefrontapi.generated';
+import minusSvg from '~/assets/minus.svg';
+import plusSvg from '~/assets/plus.svg';
 import ProductFeaturesSlider from '~/components/pdp/ProductFeaturesSlider';
 import ProductUSP from '~/components/pdp/ProductUSP';
 import ProductCommunity from '~/components/pdp/ProductCommunity';
 import ProductFaqs from '~/components/pdp/ProductFaqs';
 import RecommendedProducts from '~/components/pdp/RecommendedProducts';
+import ProductLearnMore from '~/components/pdp/ProductLearnMore';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.product.title ?? ''}`}];
@@ -142,13 +145,19 @@ export default function Product() {
   const {selectedVariant} = product;
   return (
     <>
-      <div className="product">
-        <ProductImage image={selectedVariant?.image} />
-        <ProductMain
-          selectedVariant={selectedVariant}
-          product={product}
-          variants={variants}
-        />
+      <div className="con pt-24 md:pt-36 pb-10 md:pb-11">
+        <div className="flex flex-col-reverse md:flex-row flex-wrap">
+          <div className="w-full shrink-0 grow-0 md:basis-5/12 lg:basis-1/2 md:pr-5 lg:pr-10">
+            <ProductMain
+              selectedVariant={selectedVariant}
+              product={product}
+              variants={variants}
+            />
+          </div>
+          <div className="w-full shrink-0 grow-0 md:basis-7/12 lg:basis-1/2">
+            <ProductImage image={selectedVariant?.image} />
+          </div>
+        </div>
       </div>
       {product.properties?.references && (
         <ProductProperties
@@ -209,39 +218,38 @@ function ProductMain({
   const {title, descriptionHtml} = product;
   return (
     <div className="product-main">
-      <h1>{title}</h1>
+      <h2>{title}</h2>
       <ProductPrice selectedVariant={selectedVariant} />
-      <br />
-      <Suspense
-        fallback={
-          <ProductForm
-            product={product}
-            selectedVariant={selectedVariant}
-            variants={[]}
-          />
-        }
-      >
-        <Await
-          errorElement="There was a problem loading product variants"
-          resolve={variants}
-        >
-          {(data) => (
+      <div className="mt-10 md:mt-14">
+        <Suspense
+          fallback={
             <ProductForm
               product={product}
               selectedVariant={selectedVariant}
-              variants={data.product?.variants.nodes || []}
+              variants={[]}
             />
-          )}
-        </Await>
-      </Suspense>
-      <br />
-      <br />
-      <p>
-        <strong>Description</strong>
-      </p>
-      <br />
-      <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-      <br />
+          }
+        >
+          <Await
+            errorElement="There was a problem loading product variants"
+            resolve={variants}
+          >
+            {(data) => (
+              <ProductForm
+                product={product}
+                selectedVariant={selectedVariant}
+                variants={data.product?.variants.nodes || []}
+              />
+            )}
+          </Await>
+        </Suspense>
+      </div>
+      {product.learn_more?.references && (
+        <ProductLearnMore
+          title={product.learn_more_title?.value}
+          items={flattenConnection(product.learn_more.references)}
+        />
+      )}
     </div>
   );
 }
@@ -252,12 +260,10 @@ function ProductPrice({
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
   return (
-    <div className="product-price">
+    <div className="small text-sm md:text-xl mt-1 md:mt-2">
       {selectedVariant?.compareAtPrice ? (
         <>
-          <p>Sale</p>
-          <br />
-          <div className="product-price-on-sale">
+          <div>
             {selectedVariant ? <Money data={selectedVariant.price} /> : null}
             <s>
               <Money data={selectedVariant.compareAtPrice} />
@@ -280,63 +286,104 @@ function ProductForm({
   selectedVariant: ProductFragment['selectedVariant'];
   variants: Array<ProductVariantFragment>;
 }) {
+  const [quantity, setQuantity] = useState<number>(0);
+
   return (
-    <div className="product-form">
+    <div className="flex flex-col">
       <VariantSelector
         handle={product.handle}
         options={product.options}
         variants={variants}
       >
-        {({option}) => <ProductOptions key={option.name} option={option} />}
+        {({option}) => (
+          <ProductOptions
+            key={option.name}
+            option={option}
+            selectedVariant={selectedVariant}
+          />
+        )}
       </VariantSelector>
-      <br />
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          window.location.href = window.location.href + '#cart-aside';
-        }}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                },
-              ]
-            : []
-        }
-      >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-      </AddToCartButton>
+      <div className="flex space-x-5 order-last mt-7 md:mt-10">
+        <div className="flex justify-between items-center border border-noir rounded-full px-5 py-4">
+          <img src={minusSvg} className="h-6 w-6 cursor-pointer" />
+          <input
+            type="number"
+            name="quantity"
+            id="quantity"
+            className="appearance-none w-20 h-6 focus:outline-none"
+          />
+          <img src={plusSvg} className="h-6 w-6 cursor-pointer" />
+        </div>
+        <div>
+          <AddToCartButton
+            disabled={!selectedVariant || !selectedVariant.availableForSale}
+            onClick={() => {
+              window.location.href = window.location.href + '#cart-aside';
+            }}
+            lines={
+              selectedVariant
+                ? [
+                    {
+                      merchandiseId: selectedVariant.id,
+                      quantity: 1,
+                    },
+                  ]
+                : []
+            }
+          >
+            {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+          </AddToCartButton>
+        </div>
+      </div>
     </div>
   );
 }
 
-function ProductOptions({option}: {option: VariantOption}) {
+function ProductOptions({
+  option,
+  selectedVariant,
+}: {
+  option: VariantOption;
+  selectedVariant: ProductFragment['selectedVariant'];
+}) {
   return (
-    <div className="product-options" key={option.name}>
-      <h5>{option.name}</h5>
-      <div className="product-options-grid">
-        {option.values.map(({value, isAvailable, isActive, to}) => {
-          return (
-            <Link
-              className="product-options-item"
-              key={option.name + value}
-              prefetch="intent"
-              preventScrollReset
-              replace
-              to={to}
-              style={{
-                border: isActive ? '1px solid black' : '1px solid transparent',
-                opacity: isAvailable ? 1 : 0.3,
-              }}
-            >
-              {value}
-            </Link>
-          );
-        })}
+    <div
+      className={`${
+        option.name.toUpperCase() === 'SIZE'
+          ? 'order-1'
+          : 'order-3  mt-7 md:mt-10'
+      }`}
+      key={option.name}
+    >
+      <div className="flex flex-col lg:flex-row lg:items-center space-y-2 lg:space-y-0 lg:space-x-5">
+        <p className="lg:basis-[100px] lg:shrink-0 lg:grow-0">
+          {option.name}
+          <span className="inline lg:hidden">
+            :{' '}
+            {selectedVariant?.selectedOptions?.find(
+              (opt) => opt.name === option.name,
+            )?.value || ''}
+          </span>
+        </p>
+        <div className="flex -ml-1 -mt-2 flex-wrap">
+          {option.values.map(({value, isAvailable, isActive, to}) => {
+            return (
+              <Link
+                className={`text-xs md:text-sm px-4 py-2 rounded-full border border-noir mt-2 ml-1 whitespace-nowrap ${
+                  isActive ? 'bg-noir text-cream' : ''
+                } ${!isAvailable ? 'opacity-30' : ''}`}
+                key={option.name + value}
+                prefetch="intent"
+                preventScrollReset
+                replace
+                to={to}
+              >
+                {value}
+              </Link>
+            );
+          })}
+        </div>
       </div>
-      <br />
     </div>
   );
 }
