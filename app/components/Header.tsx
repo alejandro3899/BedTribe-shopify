@@ -1,14 +1,19 @@
 import {Await, NavLink} from '@remix-run/react';
-import {Suspense, useState} from 'react';
-import type {HeaderQuery} from 'storefrontapi.generated';
+import {Image, Money} from '@shopify/hydrogen';
+import {Suspense, useEffect, useState} from 'react';
+import type {CartApiQueryFragment, HeaderQuery} from 'storefrontapi.generated';
 import type {LayoutProps} from './Layout';
 import {useRootLoaderData} from '~/root';
+import Drawer from './Drawer';
+import {useCartFetchers} from '~/hooks/useCartFetchers';
+import {CartForm} from '@shopify/hydrogen';
+import {useCart} from '~/hooks/useCart';
 import logo from '~/assets/logo.svg';
 import account from '~/assets/account.svg';
-import cart from '~/assets/cart.svg';
+import cartSvg from '~/assets/cart.svg';
 import search from '~/assets/search.svg';
 import cross from '~/assets/cross.svg';
-import Drawer from './Drawer';
+import CartMain from './Cart';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 
@@ -167,12 +172,40 @@ function SearchToggle() {
   );
 }
 
-function CartBadge({count}: {count: number}) {
+function CartBadge({
+  count,
+  cart,
+}: {
+  count: number;
+  cart?: CartApiQueryFragment;
+}) {
+  const addToCartFetchers = useCartFetchers([CartForm.ACTIONS.LinesAdd]);
+  const {isOpen, openCart, closeCart} = useCart();
+
+  useEffect(() => {
+    if (
+      !addToCartFetchers.length ||
+      addToCartFetchers[0].state === 'submitting'
+    )
+      return;
+    else {
+      !isOpen && openCart();
+    }
+  }, [addToCartFetchers[0]?.state]);
+
   return (
-    <a href="#cart-aside">
-      <img src={cart} alt="header cart" className="block md:hidden" />
-      <p className="header-menu-item hidden md:block">Cart({count})</p>
-    </a>
+    <>
+      <div onClick={() => openCart()} className="relative">
+        <img src={cartSvg} alt="header cart" className="block md:hidden" />
+        <div className="absolute top-[1px] right-0 text-[9px] block md:hidden">
+          {count}
+        </div>
+        <p className="header-menu-item hidden md:block">Cart({count})</p>
+      </div>
+      <Drawer enterFrom="RIGHT" closeDrawer={closeCart} isOpen={isOpen}>
+        <CartMain cart={cart} count={count} closeCart={closeCart} />
+      </Drawer>
+    </>
   );
 }
 
@@ -182,7 +215,7 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
       <Await resolve={cart}>
         {(cart) => {
           if (!cart) return <CartBadge count={0} />;
-          return <CartBadge count={cart.totalQuantity || 0} />;
+          return <CartBadge count={cart.totalQuantity || 0} cart={cart} />;
         }}
       </Await>
     </Suspense>

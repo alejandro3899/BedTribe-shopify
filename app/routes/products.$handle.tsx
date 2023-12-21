@@ -327,10 +327,8 @@ function ProductForm({
         </div>
         <div className="w-full md:w-[200px]">
           <AddToCartButton
+            availableForSale={!!selectedVariant?.availableForSale}
             disabled={!selectedVariant || !selectedVariant.availableForSale}
-            onClick={() => {
-              window.location.href = window.location.href + '#cart-aside';
-            }}
             lines={
               selectedVariant
                 ? [
@@ -341,9 +339,7 @@ function ProductForm({
                   ]
                 : []
             }
-          >
-            {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-          </AddToCartButton>
+          />
         </div>
       </div>
     </div>
@@ -358,7 +354,6 @@ function ProductOptions({
   selectedVariant: ProductFragment['selectedVariant'];
 }) {
   const {colors} = useRootLoaderData();
-  console.log(colors);
   return (
     <div
       className={`${
@@ -400,7 +395,6 @@ function ProductOptions({
         ) : (
           <div className="flex -ml-2 -mt-3 flex-wrap w-full md:max-w-[220px]">
             {option.values.map(({value, isAvailable, isActive, to}) => {
-              console.log(value);
               const colorSvg = flattenConnection(colors.metaobjects).find(
                 (color) =>
                   color.name?.value?.toUpperCase() === value.toUpperCase(),
@@ -433,16 +427,16 @@ function ProductOptions({
 
 function AddToCartButton({
   analytics,
-  children,
   disabled,
   lines,
   onClick,
+  availableForSale,
 }: {
   analytics?: unknown;
-  children: React.ReactNode;
   disabled?: boolean;
   lines: CartLineInput[];
   onClick?: () => void;
+  availableForSale: boolean;
 }) {
   return (
     <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
@@ -459,10 +453,28 @@ function AddToCartButton({
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
           >
-            {children}
+            <AtcLabel fetcher={fetcher} availableForSale={availableForSale} />
           </button>
         </>
       )}
     </CartForm>
+  );
+}
+
+function AtcLabel({
+  fetcher,
+  availableForSale,
+}: {
+  fetcher: FetcherWithComponents<any>;
+  availableForSale: boolean;
+}) {
+  return (
+    <>
+      {availableForSale
+        ? fetcher.state !== 'idle'
+          ? 'Adding to cart'
+          : 'Add to cart'
+        : 'Sold out'}
+    </>
   );
 }

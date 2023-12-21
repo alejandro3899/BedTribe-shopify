@@ -3,7 +3,6 @@ import {Suspense} from 'react';
 import type {CartQueryData} from '@shopify/hydrogen';
 import {CartForm} from '@shopify/hydrogen';
 import {json, type ActionFunctionArgs} from '@shopify/remix-oxygen';
-import {CartMain} from '~/components/Cart';
 import {useRootLoaderData} from '~/root';
 
 export const meta: MetaFunction = () => {
@@ -85,22 +84,5 @@ export async function action({request, context}: ActionFunctionArgs) {
 }
 
 export default function Cart() {
-  const rootData = useRootLoaderData();
-  const cartPromise = rootData.cart;
-
-  return (
-    <div className="cart">
-      <h1>Cart</h1>
-      <Suspense fallback={<p>Loading cart ...</p>}>
-        <Await
-          resolve={cartPromise}
-          errorElement={<div>An error occurred</div>}
-        >
-          {(cart) => {
-            return <CartMain layout="page" cart={cart} />;
-          }}
-        </Await>
-      </Suspense>
-    </div>
-  );
+  return <></>;
 }

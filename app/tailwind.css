@@ -131,3 +131,7 @@
   backdrop-filter: blur(80px);
   background: rgba(246, 245, 242, 0.3);
 }
+
+body::-webkit-scrollbar {
+  width: 0;
+}
