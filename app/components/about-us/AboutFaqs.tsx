@@ -2,13 +2,13 @@ import {flattenConnection} from '@shopify/hydrogen';
 import {AboutFaqsQuery} from 'storefrontapi.generated';
 import faqHeader from '~/assets/faq.svg';
 import faqHeaderM from '~/assets/faq-m.svg';
-import FaqItem from '../FaqItem';
+import FaqItem from '../global/FaqItem';
 
 export default function AboutFaqs({data}: {data: AboutFaqsQuery}) {
   if (!data.metaobject?.items?.references) return null;
 
   return (
-    <div className="con md:px-[60px]">
+    <div className="con md:px-[60px] py-[60px] md:py-20">
       <div className="w-full relative">
         <img
           src={faqHeader}

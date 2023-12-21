@@ -1,18 +1,9 @@
 import {useLoaderData, Link} from '@remix-run/react';
 import {json, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {
-  flattenConnection,
-  getPaginationVariables,
-  Image,
-  Money,
-} from '@shopify/hydrogen';
+import {flattenConnection, Image} from '@shopify/hydrogen';
 import {COLLECTIONS_QUERY} from '~/queries/collection';
 import {useEffect, useState} from 'react';
-import {
-  ProductCardItemFragment,
-  ProductItemFragment,
-} from 'storefrontapi.generated';
-import ProductItemV1 from '~/components/ProductItemV1';
+import ProductItemV1 from '~/components/global/ProductItemV1';
 
 export async function loader({context}: LoaderFunctionArgs) {
   const {metaobject} = await context.storefront.query(COLLECTIONS_QUERY);

@@ -4,7 +4,7 @@ import {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useCart} from '~/hooks/useCart';
 import {useCartFetchers} from '~/hooks/useCartFetchers';
 import cartSvg from '~/assets/cart.svg';
-import Drawer from '../Drawer';
+import Drawer from '../global/Drawer';
 import CartMain from './CartMain';
 import {Await} from '@remix-run/react';
 

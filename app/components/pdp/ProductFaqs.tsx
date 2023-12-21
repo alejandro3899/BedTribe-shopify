@@ -1,7 +1,7 @@
 import {FaqItemFragment} from 'storefrontapi.generated';
 import faqHeader from '~/assets/faq.svg';
 import faqHeaderM from '~/assets/faq-m.svg';
-import FaqItem from '../FaqItem';
+import FaqItem from '../global/FaqItem';
 
 export default function ProductFaqs({data}: {data: FaqItemFragment[]}) {
   return (

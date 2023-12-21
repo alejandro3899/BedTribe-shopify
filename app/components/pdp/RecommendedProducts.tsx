@@ -1,7 +1,7 @@
 import {flattenConnection} from '@shopify/hydrogen';
 import {RecommendedProductsQuery} from 'storefrontapi.generated';
 import {Swiper, SwiperSlide} from 'swiper/react';
-import ProductItemV1 from '../ProductItemV1';
+import ProductItemV1 from '../global/ProductItemV1';
 
 export default function RecommendedProducts({
   data,

@@ -5,7 +5,6 @@ import type {
   FooterQuery,
   HeaderQuery,
 } from 'storefrontapi.generated';
-import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {
   PredictiveSearchForm,
@@ -37,29 +36,29 @@ export function Layout({cart, children = null, footer, header}: LayoutProps) {
   );
 }
 
-function SearchAside() {
-  return (
-    <Aside id="search-aside" heading="SEARCH">
-      <div className="predictive-search">
-        <br />
-        <PredictiveSearchForm>
-          {({fetchResults, inputRef}) => (
-            <div>
-              <input
-                name="q"
-                onChange={fetchResults}
-                onFocus={fetchResults}
-                placeholder="Search"
-                ref={inputRef}
-                type="search"
-              />
-              &nbsp;
-              <button type="submit">Search</button>
-            </div>
-          )}
-        </PredictiveSearchForm>
-        <PredictiveSearchResults />
-      </div>
-    </Aside>
-  );
-}
+// function SearchAside() {
+//   return (
+//     <Aside id="search-aside" heading="SEARCH">
+//       <div className="predictive-search">
+//         <br />
+//         <PredictiveSearchForm>
+//           {({fetchResults, inputRef}) => (
+//             <div>
+//               <input
+//                 name="q"
+//                 onChange={fetchResults}
+//                 onFocus={fetchResults}
+//                 placeholder="Search"
+//                 ref={inputRef}
+//                 type="search"
+//               />
+//               &nbsp;
+//               <button type="submit">Search</button>
+//             </div>
+//           )}
+//         </PredictiveSearchForm>
+//         <PredictiveSearchResults />
+//       </div>
+//     </Aside>
+//   );
+// }

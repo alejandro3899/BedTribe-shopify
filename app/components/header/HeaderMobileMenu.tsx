@@ -2,7 +2,7 @@ import {HeaderQuery} from 'storefrontapi.generated';
 import {LayoutProps} from '../Layout';
 import {useState} from 'react';
 import {useRootLoaderData} from '~/root';
-import Drawer from '../Drawer';
+import Drawer from '../global/Drawer';
 import cross from '~/assets/cross.svg';
 import {NavLink} from '@remix-run/react';
 
