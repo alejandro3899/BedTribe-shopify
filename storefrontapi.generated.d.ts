@@ -594,6 +594,19 @@ export type FaqItemFragment = Pick<StorefrontAPI.Metaobject, 'id'> & {
   answer?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
 };
 
+export type GlobalSettingsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type GlobalSettingsQuery = {
+  metaobject?: StorefrontAPI.Maybe<{
+    free_shipping_threshold?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.MetaobjectField, 'value'>
+    >;
+  }>;
+};
+
 export type MenuItemFragment = Pick<
   StorefrontAPI.MenuItem,
   'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
@@ -2986,6 +2999,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  fragment SocialLinkItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    url: field(key: "url") { value}\n  }\n\n  query Footer(\n    $country: CountryCode,\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    metaobject(handle: {\n      handle: "footer",\n      type: "footer"\n    }) {\n      desc: field(key: "description") { value }\n      marqueeTexts: field(key: "marquee_texts") { value }\n      socialLinks: field(key: "social_links") {\n        references (first: 10) {\n          edges {\n            node {\n              ...SocialLinkItem\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: FooterQuery;
     variables: FooterQueryVariables;
+  };
+  '#graphql\n  query GlobalSettings(\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    metaobject(handle: {\n      handle: "global-settings-9jqlnldz",\n      type: "global_settings"\n    }) {\n      free_shipping_threshold: field(key: "free_shipping_threshold") { value }\n    }\n  }\n': {
+    return: GlobalSettingsQuery;
+    variables: GlobalSettingsQueryVariables;
   };
   '#graphql\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n  }\n  query Header(\n    $country: CountryCode\n    $headerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    shop {\n      ...Shop\n    }\n    menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: HeaderQuery;

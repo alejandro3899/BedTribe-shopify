@@ -117,3 +117,17 @@ export const FAQ_ITEM_FRAGMENT = `#graphql
     answer: field(key: "answer") { value }
   }
 ` as const;
+
+export const GLOBAL_SETTINGS = `#graphql
+  query GlobalSettings(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(language: $language, country: $country) {
+    metaobject(handle: {
+      handle: "global-settings-9jqlnldz",
+      type: "global_settings"
+    }) {
+      free_shipping_threshold: field(key: "free_shipping_threshold") { value }
+    }
+  }
+` as const;
