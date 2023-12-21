@@ -25,14 +25,8 @@ export default function HomepageLogos({data}: {data: HomepageLogosQuery}) {
           {flattenConnection(data.metaobject.logos.references).map((logo) => {
             if (!logo.image) return null;
             return (
-              <SwiperSlide className="!w-fit">
-                <Image
-                  data={logo.image}
-                  alt=""
-                  key={logo.image.id}
-                  sizes="216px"
-                  width="216"
-                />
+              <SwiperSlide className="!w-fit" key={logo.image.id}>
+                <Image data={logo.image} alt="" sizes="216px" width="216" />
               </SwiperSlide>
             );
           })}

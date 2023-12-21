@@ -1,9 +1,9 @@
 import cross from '~/assets/cross.svg';
 import {CartApiQueryFragment} from 'storefrontapi.generated';
-import CartLineItem from './cart/CartLineItem';
-import CartNote from './cart/CartNote';
-import CartProgress from './cart/CartProgress';
-import CartCheckoutBtn from './cart/CartCheckoutBtn';
+import CartLineItem from './CartLineItem';
+import CartNote from './CartNote';
+import CartProgress from './CartProgress';
+import CartCheckoutBtn from './CartCheckoutBtn';
 
 export default function CartMain({
   cart,

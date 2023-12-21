@@ -99,7 +99,7 @@
     @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2;
   }
   .header-menu-item {
-    @apply font-sans text-sm leading-none text-noir;
+    @apply font-sans text-sm leading-none px-2 py-1 rounded;
   }
   .account label {
     @apply font-mono text-black text-11 md:text-xs leading-none uppercase block mt-7 mb-2;

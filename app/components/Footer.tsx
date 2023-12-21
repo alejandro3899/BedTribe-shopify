@@ -78,12 +78,12 @@ function FooterMenu({
 const SingupNewsLetter = () => {
   return (
     <div className="flex items-center justify-between md:justify-end w-full">
-      <label htmlFor="email">
+      <label htmlFor="footer_signup_email">
         <span className="text-11 md:text-sm">Newsletter</span>
         <input
           type="email"
-          name="email"
-          id="email"
+          name="footer_signup_email"
+          id="footer_signup_email"
           className="bg-transparent ml-3 placeholder:text-dusk text-11 focus:outline-none"
           placeholder="Enter email address"
         />

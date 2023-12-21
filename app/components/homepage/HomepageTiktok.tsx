@@ -15,7 +15,7 @@ export default function HomepageTiktok({data}: {data: HomepageTiktoksQuery}) {
           className="!overflow-visible"
         >
           {flattenConnection(data.metaobject.items.references).map((item) => (
-            <SwiperSlide className="!w-[240px]">
+            <SwiperSlide className="!w-[240px]" key={item.id}>
               <div className="bg-cream rounded-lg md:rounded-xl overflow-hidden">
                 <div
                   className="pb-[150%] bg-cover bg-center"

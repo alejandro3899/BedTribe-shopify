@@ -7,11 +7,11 @@ import type {
 } from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
-import {Header} from '~/components/Header';
 import {
   PredictiveSearchForm,
   PredictiveSearchResults,
 } from '~/components/Search';
+import {Header} from './header/Header';
 
 export type LayoutProps = {
   cart: Promise<CartApiQueryFragment | null>;
@@ -23,7 +23,6 @@ export type LayoutProps = {
 export function Layout({cart, children = null, footer, header}: LayoutProps) {
   return (
     <>
-      {/* <CartAside cart={cart} /> */}
       {/* <SearchAside /> */}
       <Header header={header} cart={cart} />
       <main>{children}</main>
