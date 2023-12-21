@@ -1,8 +1,9 @@
-import {HeaderQuery} from 'storefrontapi.generated';
+import {HeaderQuery, MenuItemFragment} from 'storefrontapi.generated';
 import {LayoutProps} from '../Layout';
 import {useRootLoaderData} from '~/root';
 import {NavLink} from '@remix-run/react';
 import HeaderMenuMobileToggle from './HeaderMobileMenu';
+import {Fragment} from 'react';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 
@@ -18,76 +19,80 @@ export default function HeaderMenu({
   return (
     <>
       <nav className="space-x-5 hidden md:flex">
-        {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-          if (!item.url) return null;
+        {menu &&
+          menu.items.map((item) => {
+            if (!item.url) return null;
 
-          // if the url is internal, we strip the domain
-          const url =
-            item.url.includes('myshopify.com') ||
-            item.url.includes(publicStoreDomain) ||
-            item.url.includes(primaryDomainUrl)
-              ? new URL(item.url).pathname
-              : item.url;
-          return (
-            <NavLink
-              className={({isActive}) =>
-                `header-menu-item ${
-                  isActive ? 'bg-dusk text-cream' : 'text-noir'
-                }`
-              }
-              end
-              key={item.id}
-              prefetch="intent"
-              to={url}
-            >
-              {item.title}
-            </NavLink>
-          );
-        })}
+            // if the url is internal, we strip the domain
+            const url =
+              item.url.includes('myshopify.com') ||
+              item.url.includes(publicStoreDomain) ||
+              item.url.includes(primaryDomainUrl)
+                ? new URL(item.url).pathname
+                : item.url;
+            return (
+              <Fragment key={item.id}>
+                {item.items.length === 0 ? (
+                  <NavLink
+                    className={({isActive}) =>
+                      `header-menu-item peer relative z-20 ${
+                        isActive ? 'bg-dusk text-cream' : 'text-noir'
+                      }`
+                    }
+                    end
+                    key={item.id}
+                    prefetch="intent"
+                    to={url}
+                  >
+                    {item.title}
+                  </NavLink>
+                ) : (
+                  <div
+                    className="header-menu-item group text-noir"
+                    key={item.id}
+                  >
+                    <span className="relative z-20 cursor-pointer">
+                      {item.title}
+                    </span>
+                    {item.items.length > 0 && (
+                      <div className="absolute top-0 left-0 right-0 !m-0 pt-14 px-5 pb-3 hidden group-hover:block bg-cream rounded-lg">
+                        {item.items.map((subItem) => {
+                          if (!subItem.url) return null;
+                          const subUrl =
+                            subItem.url.includes('myshopify.com') ||
+                            subItem.url.includes(publicStoreDomain) ||
+                            subItem.url.includes(primaryDomainUrl)
+                              ? new URL(subItem.url).pathname
+                              : subItem.url;
+                          return (
+                            <NavLink
+                              key={subItem.id}
+                              to={subUrl}
+                              className={({isActive}) =>
+                                `border-b border-noir py-5 block text-18 leading-none uppercase ${
+                                  isActive ? 'font-semibold' : ''
+                                }`
+                              }
+                            >
+                              {subItem.title}
+                            </NavLink>
+                          );
+                        })}
+                        <NavLink
+                          to={url}
+                          className="py-5 small text-11 block !leading-none"
+                        >
+                          vew all
+                        </NavLink>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Fragment>
+            );
+          })}
       </nav>
       <HeaderMenuMobileToggle menu={menu} primaryDomainUrl={primaryDomainUrl} />
     </>
   );
 }
-
-const FALLBACK_HEADER_MENU = {
-  id: 'gid://shopify/Menu/199655587896',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461609500728',
-      resourceId: null,
-      tags: [],
-      title: 'Collections',
-      type: 'HTTP',
-      url: '/collections',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609533496',
-      resourceId: null,
-      tags: [],
-      title: 'Blog',
-      type: 'HTTP',
-      url: '/blogs/journal',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609566264',
-      resourceId: null,
-      tags: [],
-      title: 'Policies',
-      type: 'HTTP',
-      url: '/policies',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609599032',
-      resourceId: 'gid://shopify/Page/92591030328',
-      tags: [],
-      title: 'About',
-      type: 'PAGE',
-      url: '/pages/about',
-      items: [],
-    },
-  ],
-};

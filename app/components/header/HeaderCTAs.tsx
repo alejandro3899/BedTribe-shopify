@@ -9,7 +9,7 @@ type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 export default function HeaderCTAs({cart}: Pick<HeaderProps, 'cart'>) {
   return (
     <nav
-      className="flex space-x-1 md:space-x-5 [&>*]:flex [&>*]:justify-center [&>*]:items-center"
+      className="flex space-x-1 md:space-x-5 [&>*]:flex [&>*]:justify-center [&>*]:items-center relative z-20"
       role="navigation"
     >
       <SearchToggle />
