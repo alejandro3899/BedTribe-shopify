@@ -604,6 +604,19 @@ export type GlobalSettingsQuery = {
     free_shipping_threshold?: StorefrontAPI.Maybe<
       Pick<StorefrontAPI.MetaobjectField, 'value'>
     >;
+    nav_image?: StorefrontAPI.Maybe<{
+      reference?: StorefrontAPI.Maybe<{
+        image?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
+        >;
+      }>;
+    }>;
+    nav_image_label?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.MetaobjectField, 'value'>
+    >;
+    nav_image_link?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.MetaobjectField, 'value'>
+    >;
   }>;
 };
 
@@ -615,7 +628,14 @@ export type MenuItemFragment = Pick<
 export type ChildMenuItemFragment = Pick<
   StorefrontAPI.MenuItem,
   'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
->;
+> & {
+  items: Array<
+    Pick<
+      StorefrontAPI.MenuItem,
+      'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
+    >
+  >;
+};
 
 export type ParentMenuItemFragment = Pick<
   StorefrontAPI.MenuItem,
@@ -625,7 +645,14 @@ export type ParentMenuItemFragment = Pick<
     Pick<
       StorefrontAPI.MenuItem,
       'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
-    >
+    > & {
+      items: Array<
+        Pick<
+          StorefrontAPI.MenuItem,
+          'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
+        >
+      >;
+    }
   >;
 };
 
@@ -639,7 +666,14 @@ export type MenuFragment = Pick<StorefrontAPI.Menu, 'id'> & {
         Pick<
           StorefrontAPI.MenuItem,
           'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
-        >
+        > & {
+          items: Array<
+            Pick<
+              StorefrontAPI.MenuItem,
+              'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
+            >
+          >;
+        }
       >;
     }
   >;
@@ -683,7 +717,14 @@ export type HeaderQuery = {
             Pick<
               StorefrontAPI.MenuItem,
               'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
-            >
+            > & {
+              items: Array<
+                Pick<
+                  StorefrontAPI.MenuItem,
+                  'id' | 'resourceId' | 'tags' | 'title' | 'type' | 'url'
+                >
+              >;
+            }
           >;
         }
       >;
@@ -3000,11 +3041,11 @@ interface GeneratedQueryTypes {
     return: FooterQuery;
     variables: FooterQueryVariables;
   };
-  '#graphql\n  query GlobalSettings(\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    metaobject(handle: {\n      handle: "global-settings-9jqlnldz",\n      type: "global_settings"\n    }) {\n      free_shipping_threshold: field(key: "free_shipping_threshold") { value }\n    }\n  }\n': {
+  '#graphql\n  query GlobalSettings(\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    metaobject(handle: {\n      handle: "global-settings-9jqlnldz",\n      type: "global_settings"\n    }) {\n      free_shipping_threshold: field(key: "free_shipping_threshold") { value }\n      nav_image: field(key: "nav_image") {\n        reference {\n          ... on MediaImage {\n            image {\n              url\n              width\n              height\n              altText\n            }\n          }\n        }\n      }\n      nav_image_label: field(key: "nav_image_label") { value }\n      nav_image_link: field(key: "nav_image_link") { value }\n    }\n  }\n': {
     return: GlobalSettingsQuery;
     variables: GlobalSettingsQueryVariables;
   };
-  '#graphql\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n  }\n  query Header(\n    $country: CountryCode\n    $headerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    shop {\n      ...Shop\n    }\n    menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
+  '#graphql\n  fragment Shop on Shop {\n    id\n    name\n    description\n    primaryDomain {\n      url\n    }\n    brand {\n      logo {\n        image {\n          url\n        }\n      }\n    }\n  }\n  query Header(\n    $country: CountryCode\n    $headerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    shop {\n      ...Shop\n    }\n    menu(handle: $headerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...MenuItem\n    }\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: HeaderQuery;
     variables: HeaderQueryVariables;
   };

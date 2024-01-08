@@ -128,6 +128,20 @@ export const GLOBAL_SETTINGS = `#graphql
       type: "global_settings"
     }) {
       free_shipping_threshold: field(key: "free_shipping_threshold") { value }
+      nav_image: field(key: "nav_image") {
+        reference {
+          ... on MediaImage {
+            image {
+              url
+              width
+              height
+              altText
+            }
+          }
+        }
+      }
+      nav_image_label: field(key: "nav_image_label") { value }
+      nav_image_link: field(key: "nav_image_link") { value }
     }
   }
 ` as const;

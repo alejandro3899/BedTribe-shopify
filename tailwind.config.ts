@@ -23,6 +23,7 @@ export default {
         'product-card': '#F0F0F0',
         moon: '#888B8E',
         taupe: '#938783',
+        shade: '#E3E3E3',
       },
       fontSize: {
         '11': ['11px', '1.0'],

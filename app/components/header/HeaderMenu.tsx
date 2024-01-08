@@ -4,6 +4,7 @@ import {useRootLoaderData} from '~/root';
 import {NavLink} from '@remix-run/react';
 import HeaderMenuMobileToggle from './HeaderMobileMenu';
 import {Fragment} from 'react';
+import {Image} from '@shopify/hydrogen';
 
 type HeaderProps = Pick<LayoutProps, 'header' | 'cart'>;
 
@@ -15,6 +16,7 @@ export default function HeaderMenu({
   primaryDomainUrl: HeaderQuery['shop']['primaryDomain']['url'];
 }) {
   const {publicStoreDomain} = useRootLoaderData();
+  const {globalSettings} = useRootLoaderData();
 
   return (
     <>
@@ -55,35 +57,78 @@ export default function HeaderMenu({
                       {item.title}
                     </span>
                     {item.items.length > 0 && (
-                      <div className="absolute top-0 left-0 right-0 !m-0 pt-14 px-5 pb-3 hidden group-hover:block bg-cream rounded-lg">
-                        {item.items.map((subItem) => {
-                          if (!subItem.url) return null;
-                          const subUrl =
-                            subItem.url.includes('myshopify.com') ||
-                            subItem.url.includes(publicStoreDomain) ||
-                            subItem.url.includes(primaryDomainUrl)
-                              ? new URL(subItem.url).pathname
-                              : subItem.url;
-                          return (
+                      <div className="absolute top-0 left-0 right-0 !m-0 pt-12 px-1 pb-1 hidden group-hover:block bg-cream rounded-lg">
+                        <div className="bg-shade px-7 pt-8 pb-[70px] rounded-lg">
+                          <div className="flex space-x-8">
                             <NavLink
-                              key={subItem.id}
-                              to={subUrl}
-                              className={({isActive}) =>
-                                `border-b border-noir py-5 block text-18 leading-none uppercase ${
-                                  isActive ? 'font-semibold' : ''
-                                }`
+                              to={
+                                globalSettings.metaobject?.nav_image_link
+                                  ?.value || ''
                               }
+                              className="w-40"
                             >
-                              {subItem.title}
+                              <div className="flex items-stretch before:w-0 before:pb-[125%]">
+                                <div className="w-full">
+                                  {globalSettings.metaobject?.nav_image
+                                    ?.reference?.image && (
+                                    <Image
+                                      className="rounded-xl w-full h-full object-cover object-center"
+                                      data={
+                                        globalSettings.metaobject.nav_image
+                                          .reference.image
+                                      }
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                              <div className="mt-2 flex justify-center">
+                                <div className="px-2 py-1 bg-white text-black text-[10px] leading-none rounded-full">
+                                  {globalSettings.metaobject?.nav_image_label
+                                    ?.value || ''}
+                                </div>
+                              </div>
                             </NavLink>
-                          );
-                        })}
-                        <NavLink
-                          to={url}
-                          className="py-5 small text-11 block !leading-none"
-                        >
-                          vew all
-                        </NavLink>
+                            {item.items.map((subItem) => {
+                              return (
+                                <div className="w-[180px]" key={subItem.id}>
+                                  <div className="space-y-[18px]">
+                                    <div className="text-sm text-black font-semibold">
+                                      {subItem.title}
+                                    </div>
+                                    {subItem.items.map((grandChildItem) => {
+                                      if (!grandChildItem.url) return null;
+                                      const grandChildUrl =
+                                        grandChildItem.url.includes(
+                                          'myshopify.com',
+                                        ) ||
+                                        grandChildItem.url.includes(
+                                          publicStoreDomain,
+                                        ) ||
+                                        grandChildItem.url.includes(
+                                          primaryDomainUrl,
+                                        )
+                                          ? new URL(grandChildItem.url).pathname
+                                          : grandChildItem.url;
+                                      return (
+                                        <NavLink
+                                          key={grandChildItem.id}
+                                          to={grandChildUrl}
+                                          className={({isActive}) =>
+                                            `block text-sm leading-none ${
+                                              isActive ? 'font-semibold' : ''
+                                            }`
+                                          }
+                                        >
+                                          {grandChildItem.title}
+                                        </NavLink>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
@@ -92,7 +137,11 @@ export default function HeaderMenu({
             );
           })}
       </nav>
-      <HeaderMenuMobileToggle menu={menu} primaryDomainUrl={primaryDomainUrl} />
+      <HeaderMenuMobileToggle
+        menu={menu}
+        globalSettings={globalSettings}
+        primaryDomainUrl={primaryDomainUrl}
+      />
     </>
   );
 }

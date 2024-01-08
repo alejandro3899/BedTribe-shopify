@@ -17,7 +17,7 @@ export function Header({header, cart}: HeaderProps) {
           className="w-[90px] md:w-[100px] lg:w-[120px]"
         />
       </NavLink>
-      <div className="flex justify-between items-center h-full">
+      <div className="flex justify-between items-center h-10 md:h-12">
         <HeaderMenu
           menu={menu}
           primaryDomainUrl={header.shop.primaryDomain.url}
