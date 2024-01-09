@@ -269,6 +269,180 @@ export type BlogByHandleQuery = {
   >;
 };
 
+export type BundleProductItemFragment = Pick<
+  StorefrontAPI.Product,
+  'id' | 'title' | 'handle'
+> & {
+  priceRange: {
+    minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  };
+  variants: {
+    edges: Array<{
+      node: Pick<
+        StorefrontAPI.ProductVariant,
+        'availableForSale' | 'id' | 'sku' | 'title'
+      > & {
+        compareAtPrice?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+        >;
+        image?: StorefrontAPI.Maybe<
+          {__typename: 'Image'} & Pick<
+            StorefrontAPI.Image,
+            'id' | 'url' | 'altText' | 'width' | 'height'
+          >
+        >;
+        price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+        product: Pick<StorefrontAPI.Product, 'title' | 'handle'>;
+        selectedOptions: Array<
+          Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+        >;
+        unitPrice?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+        >;
+      };
+    }>;
+  };
+  options: Array<Pick<StorefrontAPI.ProductOption, 'id' | 'name' | 'values'>>;
+};
+
+export type BundleQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  handle: StorefrontAPI.Scalars['String']['input'];
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type BundleQuery = {
+  metaobject?: StorefrontAPI.Maybe<{
+    title?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
+    discount_rate?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.MetaobjectField, 'value'>
+    >;
+    image?: StorefrontAPI.Maybe<{
+      reference?: StorefrontAPI.Maybe<{
+        image?: StorefrontAPI.Maybe<
+          Pick<
+            StorefrontAPI.Image,
+            'id' | 'url' | 'width' | 'height' | 'altText'
+          >
+        >;
+      }>;
+    }>;
+    products?: StorefrontAPI.Maybe<{
+      references?: StorefrontAPI.Maybe<{
+        edges: Array<{
+          node: Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+            priceRange: {
+              minVariantPrice: Pick<
+                StorefrontAPI.MoneyV2,
+                'amount' | 'currencyCode'
+              >;
+            };
+            variants: {
+              edges: Array<{
+                node: Pick<
+                  StorefrontAPI.ProductVariant,
+                  'availableForSale' | 'id' | 'sku' | 'title'
+                > & {
+                  compareAtPrice?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                  >;
+                  image?: StorefrontAPI.Maybe<
+                    {__typename: 'Image'} & Pick<
+                      StorefrontAPI.Image,
+                      'id' | 'url' | 'altText' | 'width' | 'height'
+                    >
+                  >;
+                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+                  product: Pick<StorefrontAPI.Product, 'title' | 'handle'>;
+                  selectedOptions: Array<
+                    Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+                  >;
+                  unitPrice?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                  >;
+                };
+              }>;
+            };
+            options: Array<
+              Pick<StorefrontAPI.ProductOption, 'id' | 'name' | 'values'>
+            >;
+          };
+        }>;
+      }>;
+    }>;
+    dropdowns?: StorefrontAPI.Maybe<{
+      references?: StorefrontAPI.Maybe<{
+        edges: Array<{
+          node: Pick<StorefrontAPI.Metaobject, 'id'> & {
+            question?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.MetaobjectField, 'value'>
+            >;
+            answer?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.MetaobjectField, 'value'>
+            >;
+          };
+        }>;
+      }>;
+    }>;
+    faqs?: StorefrontAPI.Maybe<{
+      references?: StorefrontAPI.Maybe<{
+        edges: Array<{
+          node: Pick<StorefrontAPI.Metaobject, 'id'> & {
+            question?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.MetaobjectField, 'value'>
+            >;
+            answer?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.MetaobjectField, 'value'>
+            >;
+          };
+        }>;
+      }>;
+    }>;
+    features?: StorefrontAPI.Maybe<{
+      references?: StorefrontAPI.Maybe<{
+        edges: Array<{
+          node: Pick<StorefrontAPI.Metaobject, 'id'> & {
+            title?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.MetaobjectField, 'value'>
+            >;
+            desc?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.MetaobjectField, 'value'>
+            >;
+            image?: StorefrontAPI.Maybe<{
+              reference?: StorefrontAPI.Maybe<{
+                image?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Image, 'url' | 'width' | 'height'>
+                >;
+              }>;
+            }>;
+            image_m?: StorefrontAPI.Maybe<{
+              reference?: StorefrontAPI.Maybe<{
+                image?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Image, 'url' | 'width' | 'height'>
+                >;
+              }>;
+            }>;
+            details_image_1?: StorefrontAPI.Maybe<{
+              reference?: StorefrontAPI.Maybe<{
+                image?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Image, 'url' | 'width' | 'height'>
+                >;
+              }>;
+            }>;
+            details_image_2?: StorefrontAPI.Maybe<{
+              reference?: StorefrontAPI.Maybe<{
+                image?: StorefrontAPI.Maybe<
+                  Pick<StorefrontAPI.Image, 'url' | 'width' | 'height'>
+                >;
+              }>;
+            }>;
+          };
+        }>;
+      }>;
+    }>;
+  }>;
+};
+
 export type MoneyProductItemFragment = Pick<
   StorefrontAPI.MoneyV2,
   'amount' | 'currencyCode'
@@ -1186,29 +1360,6 @@ export type ProductVariantFragment = Pick<
   >;
 };
 
-export type ProductPropertyItemFragment = Pick<
-  StorefrontAPI.Metaobject,
-  'id'
-> & {
-  title?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
-  desc?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
-  image?: StorefrontAPI.Maybe<{
-    reference?: StorefrontAPI.Maybe<{
-      image?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
-      >;
-    }>;
-  }>;
-};
-
-export type ProductLearnMoreItemFragment = Pick<
-  StorefrontAPI.Metaobject,
-  'id'
-> & {
-  title?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
-  desc?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
-};
-
 export type ProductFeaturesSliderItemFragment = Pick<
   StorefrontAPI.Metaobject,
   'id'
@@ -1243,6 +1394,29 @@ export type ProductFeaturesSliderItemFragment = Pick<
       >;
     }>;
   }>;
+};
+
+export type ProductPropertyItemFragment = Pick<
+  StorefrontAPI.Metaobject,
+  'id'
+> & {
+  title?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
+  desc?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
+  image?: StorefrontAPI.Maybe<{
+    reference?: StorefrontAPI.Maybe<{
+      image?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Image, 'url' | 'width' | 'height' | 'altText'>
+      >;
+    }>;
+  }>;
+};
+
+export type ProductLearnMoreItemFragment = Pick<
+  StorefrontAPI.Metaobject,
+  'id'
+> & {
+  title?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
+  desc?: StorefrontAPI.Maybe<Pick<StorefrontAPI.MetaobjectField, 'value'>>;
 };
 
 export type ProductUspItemFragment = Pick<StorefrontAPI.Metaobject, 'id'> & {
@@ -3025,6 +3199,10 @@ interface GeneratedQueryTypes {
     return: BlogByHandleQuery;
     variables: BlogByHandleQueryVariables;
   };
+  '#graphql\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n  #graphql\n  fragment FaqItem on Metaobject {\n    id\n    question: field(key: "question") { value }\n    answer: field(key: "answer") { value }\n  }\n\n  #graphql\n  fragment ProductFeaturesSliderItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    image: field(key: "slider_image") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    image_m: field(key: "slider_image_mobile") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    details_image_1: field(key: "details_image_1") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    details_image_2: field(key: "detail_image_2") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n  }\n\n  fragment BundleProductItem on Product {\n    id\n    title\n    handle\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    variants(first: 1) {\n      edges {\n        node {\n          ...ProductVariant\n        }\n      }\n    }\n    options {\n      id\n      name\n      values\n    }\n  }\n\n  query Bundle (\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    metaobject(handle: {\n      handle: $handle,\n      type: "bundle"\n    }) {\n      title: field(key: "title") { value }\n      discount_rate: field(key: "discount_rate") { value }\n      image: field(key: "image") {\n        reference {\n          ... on MediaImage {\n            image {\n              id\n              url\n              width\n              height\n              altText\n            }\n          }\n        }\n      }\n      products: field(key: "products") {\n        references(first: 10) {\n          edges {\n            node {\n              ...BundleProductItem\n            }\n          }\n        }\n      }\n      dropdowns: field(key: "dropdown_items") {\n        references(first: 10) {\n          edges {\n            node {\n              ...FaqItem\n            }\n          }\n        }\n      }\n      faqs: field(key: "fa_qs") {\n        references(first: 10) {\n          edges {\n            node {\n              ...FaqItem\n            }\n          }\n        }\n      }\n      features: field(key: "features") {\n        references(first: 10) {\n          edges {\n            node {\n              ...ProductFeaturesSliderItem\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: BundleQuery;
+    variables: BundleQueryVariables;
+  };
   '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    tags\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    variants(first: 1) {\n      nodes {\n        selectedOptions {\n          name\n          value\n        }\n      }\n    }\n  }\n\n  query Collection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n    $filters: [ProductFilter!]\n    $sortKey: ProductCollectionSortKeys\n    $reverse: Boolean\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      products(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor,\n        filters: $filters\n        sortKey: $sortKey\n        reverse: $reverse\n      ) {\n        nodes {\n          ...ProductItem\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n    }\n  }\n': {
     return: CollectionQuery;
     variables: CollectionQueryVariables;
@@ -3093,7 +3271,7 @@ interface GeneratedQueryTypes {
     return: ColorsQuery;
     variables: ColorsQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment ProductPropertyItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    }\n  }\n\n  fragment ProductLearnMoreItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n  }\n\n  fragment ProductFeaturesSliderItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    image: field(key: "slider_image") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    image_m: field(key: "slider_image_mobile") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    details_image_1: field(key: "details_image_1") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    details_image_2: field(key: "detail_image_2") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n  }\n\n  fragment ProductUSPItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    icon: field(key: "icon") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    }\n  }\n\n  fragment ProductUSP on Metaobject {\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    }\n    uspItems: field(key: "usp_items") {\n      references(first: 4) {\n        edges {\n          node {\n            ...ProductUSPItem\n          }\n        }\n      }\n    }\n  }\n\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    options {\n      name\n      values\n    }\n    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    variants(first: 1) {\n      nodes {\n        ...ProductVariant\n      }\n    }\n    seo {\n      description\n      title\n    }\n    properties: metafield(key: "properties", namespace: "custom") {\n      references(first: 3) {\n        edges {\n          node {\n            ...ProductPropertyItem\n          }\n        }\n      }\n    }\n    featuresSlider: metafield(key: "features_slider", namespace: "custom") {\n      references(first: 10) {\n        edges {\n          node {\n            ...ProductFeaturesSliderItem\n          }\n        }\n      }\n    }\n    usp: metafield(key: "usp", namespace: "custom") {\n      reference {\n        ...ProductUSP\n      }\n    }\n    faqs: metafield(key: "faqs", namespace: "custom") {\n      references(first: 10) {\n        edges {\n          node {\n            ...FaqItem\n          }\n        }\n      }\n    }\n    learn_more: metafield(key: "learn_more_items", namespace: "custom") {\n      references(first: 10) {\n        edges {\n          node {\n            ...ProductLearnMoreItem\n          }\n        }\n      }\n    }\n    learn_more_title: metafield(key: "learn_more_title", namespace: "custom") { value }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n  #graphql\n  fragment FaqItem on Metaobject {\n    id\n    question: field(key: "question") { value }\n    answer: field(key: "answer") { value }\n  }\n\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $language: LanguageCode\n    $handle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment ProductPropertyItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    }\n  }\n\n  fragment ProductLearnMoreItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n  }\n\n  fragment ProductUSPItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    icon: field(key: "icon") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    }\n  }\n\n  fragment ProductUSP on Metaobject {\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    image: field(key: "image") {\n      reference {\n        ... on MediaImage {\n          image {\n            url\n            width\n            height\n            altText\n          }\n        }\n      }\n    }\n    uspItems: field(key: "usp_items") {\n      references(first: 4) {\n        edges {\n          node {\n            ...ProductUSPItem\n          }\n        }\n      }\n    }\n  }\n\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    options {\n      name\n      values\n    }\n    selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    variants(first: 1) {\n      nodes {\n        ...ProductVariant\n      }\n    }\n    seo {\n      description\n      title\n    }\n    properties: metafield(key: "properties", namespace: "custom") {\n      references(first: 3) {\n        edges {\n          node {\n            ...ProductPropertyItem\n          }\n        }\n      }\n    }\n    featuresSlider: metafield(key: "features_slider", namespace: "custom") {\n      references(first: 10) {\n        edges {\n          node {\n            ...ProductFeaturesSliderItem\n          }\n        }\n      }\n    }\n    usp: metafield(key: "usp", namespace: "custom") {\n      reference {\n        ...ProductUSP\n      }\n    }\n    faqs: metafield(key: "faqs", namespace: "custom") {\n      references(first: 10) {\n        edges {\n          node {\n            ...FaqItem\n          }\n        }\n      }\n    }\n    learn_more: metafield(key: "learn_more_items", namespace: "custom") {\n      references(first: 10) {\n        edges {\n          node {\n            ...ProductLearnMoreItem\n          }\n        }\n      }\n    }\n    learn_more_title: metafield(key: "learn_more_title", namespace: "custom") { value }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n  #graphql\n  fragment FaqItem on Metaobject {\n    id\n    question: field(key: "question") { value }\n    answer: field(key: "answer") { value }\n  }\n\n\n  #graphql\n  fragment ProductFeaturesSliderItem on Metaobject {\n    id\n    title: field(key: "title") { value }\n    desc: field(key: "description") { value }\n    image: field(key: "slider_image") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    image_m: field(key: "slider_image_mobile") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    details_image_1: field(key: "details_image_1") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n    details_image_2: field(key: "detail_image_2") {\n      reference {\n        ... on MediaImage {\n          image  {\n            url\n            width\n            height\n            url\n          }\n        }\n      }\n    }\n  }\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };

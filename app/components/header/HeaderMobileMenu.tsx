@@ -85,6 +85,7 @@ export default function HeaderMenuMobileToggle({
                     <Fragment key={item.id}>
                       {item.items.map((subItem) => (
                         <SubNavItem
+                          key={subItem.id}
                           item={subItem}
                           primaryDomainUrl={primaryDomainUrl}
                         />

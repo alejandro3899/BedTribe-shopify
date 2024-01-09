@@ -148,7 +148,7 @@ export default function Product() {
     <>
       <div className="con pt-24 md:pt-36 pb-10 md:pb-11">
         <div className="flex flex-col-reverse md:flex-row flex-wrap">
-          <div className="w-full shrink-0 grow-0 md:basis-5/12 lg:basis-1/2 md:pr-5 lg:pr-10">
+          <div className="w-full shrink-0 grow-0 md:basis-5/12 lg:basis-1/2 mt-8 md:mt-0 md:pr-5 lg:pr-10">
             <ProductMain
               selectedVariant={selectedVariant}
               product={product}
@@ -425,7 +425,7 @@ function ProductOptions({
   );
 }
 
-function AddToCartButton({
+export function AddToCartButton({
   analytics,
   disabled,
   lines,

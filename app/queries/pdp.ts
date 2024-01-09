@@ -29,7 +29,7 @@ export const COLORS_QUERY = `#graphql
   }
 ` as const;
 
-const PRODUCT_VARIANT_FRAGMENT = `#graphql
+export const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {
     availableForSale
     compareAtPrice {
@@ -66,31 +66,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
   }
 ` as const;
 
-const PRODUCT_FRAGMENT = `#graphql
-  fragment ProductPropertyItem on Metaobject {
-    id
-    title: field(key: "title") { value }
-    desc: field(key: "description") { value }
-    image: field(key: "image") {
-      reference {
-        ... on MediaImage {
-          image {
-            url
-            width
-            height
-            altText
-          }
-        }
-      }
-    }
-  }
-
-  fragment ProductLearnMoreItem on Metaobject {
-    id
-    title: field(key: "title") { value }
-    desc: field(key: "description") { value }
-  }
-
+export const PRODUCT_FEATURES_SLIDER_ITEM = `#graphql
   fragment ProductFeaturesSliderItem on Metaobject {
     id
     title: field(key: "title") { value }
@@ -143,6 +119,31 @@ const PRODUCT_FRAGMENT = `#graphql
         }
       }
     }
+  }
+` as const;
+const PRODUCT_FRAGMENT = `#graphql
+  fragment ProductPropertyItem on Metaobject {
+    id
+    title: field(key: "title") { value }
+    desc: field(key: "description") { value }
+    image: field(key: "image") {
+      reference {
+        ... on MediaImage {
+          image {
+            url
+            width
+            height
+            altText
+          }
+        }
+      }
+    }
+  }
+
+  fragment ProductLearnMoreItem on Metaobject {
+    id
+    title: field(key: "title") { value }
+    desc: field(key: "description") { value }
   }
 
   fragment ProductUSPItem on Metaobject {
@@ -271,6 +272,7 @@ export const PRODUCT_QUERY = `#graphql
     }
   }
   ${PRODUCT_FRAGMENT}
+  ${PRODUCT_FEATURES_SLIDER_ITEM}
 ` as const;
 
 const PRODUCT_VARIANTS_FRAGMENT = `#graphql
